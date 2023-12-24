@@ -10,8 +10,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_18_230322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "budgets", force: :cascade do |t|
+    t.bigint "family_id", null: false
+    t.string "name", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.index ["family_id"], name: "index_budgets_on_family_id"
+  end
+
+  create_table "expenses", force: :cascade do |t|
+    t.bigint "budget_id", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.date "date", null: false
+    t.index ["budget_id"], name: "index_expenses_on_budget_id"
+  end
+
+  create_table "families", force: :cascade do |t|
+    t.bigint "owner_id", null: false
+    t.string "name", null: false
+    t.index ["owner_id"], name: "index_families_on_owner_id"
+  end
+
+  create_table "family_members", force: :cascade do |t|
+    t.bigint "family_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["family_id"], name: "index_family_members_on_family_id"
+    t.index ["user_id"], name: "index_family_members_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+  end
+
+  add_foreign_key "budgets", "families"
+  add_foreign_key "expenses", "budgets"
+  add_foreign_key "families", "users", column: "owner_id"
+  add_foreign_key "family_members", "families"
+  add_foreign_key "family_members", "users"
 end
