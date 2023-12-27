@@ -1,0 +1,11 @@
+<div class="flex bg-gray-100 p-2 rounded-lg shadow-md">
+  <div class="flex items-center space-x-2">
+    <div class="bg-green-500 rounded-sm text-slate-200 w-8 h-8 flex justify-center items-center">
+      <i class="<%= budget.icon %>"></i>
+    </div>
+    <span class="text-lg"><%= budget.name %></span>
+  </div>
+  <div class="ml-2">
+    <span class="text-2xl"><%= number_to_currency(budget.spent || 0.0, precision: 0) %></span>
+  </div>
+</div>

@@ -1,3 +1,3 @@
-class Family < ApplicationRecord
+class Expense < ApplicationRecord
   belongs_to :budget
 end
