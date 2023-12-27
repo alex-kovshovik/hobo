@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Hobo</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+<head>
+  <title>Hobo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-    <script src="https://kit.fontawesome.com/2de86b198d.js" crossorigin="anonymous"></script>
-  </head>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  <script src="https://kit.fontawesome.com/2de86b198d.js" crossorigin="anonymous"></script>
+</head>
 
-  <body class="bg-gray-100 dark:bg-slate-800 dark:text-slate-300 h-screen">
-    <main class="container px-5 flex flex-col h-full">
-      <%= yield %>
-    </main>
-  </body>
+<body class="bg-gray-100 dark:bg-slate-800 dark:text-slate-300 h-screen">
+  <% if notice.present? %>
+    <p class="notice"><%= notice %></p>
+  <% end %>
+  <% if alert.present? %>
+    <p class="alert"><%= alert %></p>
+  <% end %>
+
+  <main class="container px-5 flex flex-col h-full">
+    <%= yield %>
+  </main>
+</body>
 </html>

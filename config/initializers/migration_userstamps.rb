@@ -1,0 +1,3 @@
+require 'userstamps_migration_helper'
+
+ActiveRecord::ConnectionAdapters::TableDefinition.include UserstampsMigrationHelper

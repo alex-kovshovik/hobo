@@ -18,6 +18,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_18_230322) do
     t.bigint "family_id", null: false
     t.string "name", null: false
     t.decimal "amount", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "created_by"
+    t.bigint "updated_by"
     t.index ["family_id"], name: "index_budgets_on_family_id"
   end
 
@@ -25,18 +29,30 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_18_230322) do
     t.bigint "budget_id", null: false
     t.decimal "amount", precision: 10, scale: 2, null: false
     t.date "date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "created_by"
+    t.bigint "updated_by"
     t.index ["budget_id"], name: "index_expenses_on_budget_id"
   end
 
   create_table "families", force: :cascade do |t|
     t.bigint "owner_id", null: false
     t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "created_by"
+    t.bigint "updated_by"
     t.index ["owner_id"], name: "index_families_on_owner_id"
   end
 
   create_table "family_members", force: :cascade do |t|
     t.bigint "family_id", null: false
     t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "created_by"
+    t.bigint "updated_by"
     t.index ["family_id"], name: "index_family_members_on_family_id"
     t.index ["user_id"], name: "index_family_members_on_user_id"
   end
@@ -44,6 +60,17 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_18_230322) do
   create_table "users", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "created_by"
+    t.bigint "updated_by"
+    t.index ["email"], name: "index_users_on_email"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
   end
 
   add_foreign_key "budgets", "families"
