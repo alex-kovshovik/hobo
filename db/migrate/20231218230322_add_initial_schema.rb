@@ -1,6 +1,8 @@
 class AddInitialSchema < ActiveRecord::Migration[7.1]
   def change
     create_table :users do |t|
+      t.references :family, null: true, index: true
+
       t.string :first_name, null: false
       t.string :last_name, null: false
 
@@ -45,18 +47,12 @@ class AddInitialSchema < ActiveRecord::Migration[7.1]
       t.userstamps
     end
 
-    create_table :family_members do |t|
-      t.references :family, null: false, foreign_key: true
-      t.references :user, null: false, foreign_key: true
-
-      t.timestamps null: false
-      t.userstamps
-    end
-
     create_table :budgets do |t|
       t.references :family, null: false, foreign_key: true
       t.string :name, null: false
+      t.string :icon, null: false
       t.decimal :amount, null: false, precision: 10, scale: 2
+      t.boolean :private, null: false, default: false
 
       t.timestamps null: false
       t.userstamps
