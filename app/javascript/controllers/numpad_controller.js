@@ -7,6 +7,10 @@ export default class extends Controller {
     this.digits = []
   }
 
+  budgetPress(e) {
+    console.log("Budget button pressed")
+  }
+
   numPress(e) {
     const key = e.currentTarget.dataset.value
 

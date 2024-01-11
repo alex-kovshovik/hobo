@@ -1,7 +1,5 @@
 <div class="grow mb-4">
-  <div class="flex flex-wrap gap-2">
-    <% @budgets.each do |budget| %>
-      <%= render "budget", budget: budget %>
-    <% end %>
-  </div>
+  <%= turbo_frame_tag "budgets", src: "/budgets", class: "flex flex-wrap gap-2" do %>
+    <p>This message will be replaced with the actual budgets</p>
+  <% end %>
 </div>

@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "budgets", class: "flex flex-wrap gap-2" do %>
+  <% @budgets.each do |budget| %>
+    <%= render "budget", budget: budget %>
+  <% end %>
+<% end %>
