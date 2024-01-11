@@ -1,14 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "amount" ]
+  static targets = [ "amount", "budgetsFrame" ]
 
   initialize() {
     this.digits = []
   }
 
   budgetPress(e) {
-    console.log("Budget button pressed")
+    // TODO: Add the expense submit call here and then reload the budgets frame!
+    console.log("Budget button pressed", e.currentTarget.dataset.budgetId)
+    this.budgetsFrameTarget.reload()
   }
 
   numPress(e) {
