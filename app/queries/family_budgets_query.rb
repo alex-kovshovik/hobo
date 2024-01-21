@@ -11,9 +11,9 @@ class FamilyBudgetsQuery
 
     family
       .budgets
-      .select('budgets.*, SUM(expenses.amount) AS spent')
+      .select("budgets.*, SUM(expenses.amount) AS spent")
       .joins("left join expenses on expenses.budget_id = budgets.id and expenses.date between '#{start_date}' and '#{end_date}'")
-      .group('budgets.id')
+      .group("budgets.id")
   end
 
   private

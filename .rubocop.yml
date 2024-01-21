@@ -13,3 +13,7 @@ Style/Documentation:
 
 Layout/LineLength:
   Max: 150
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
