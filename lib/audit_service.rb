@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuditService
   def self.set(user)
     Thread.current.thread_variable_set(:current_user, user)

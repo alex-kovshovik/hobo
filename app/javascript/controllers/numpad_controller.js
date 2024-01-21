@@ -2,15 +2,37 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = [ "amount", "budgetsFrame" ]
-
-  initialize() {
-    this.digits = []
-  }
+  static values = { digits: { type: Array, default: [] } }
 
   budgetPress(e) {
-    // TODO: Add the expense submit call here and then reload the budgets frame!
-    console.log("Budget button pressed", e.currentTarget.dataset.budgetId)
-    this.budgetsFrameTarget.reload()
+    const data = {
+      digits: this.digitsValue.join(""),
+      budget_id: e.currentTarget.dataset.budgetId
+    }
+
+    const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(`expense[${key}]`, data[key]);
+    }
+
+    fetch("/expenses", {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken
+      },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      this.budgetsFrameTarget.reload()
+      this.digitsValue = []
+
+    })
+    .catch((error) => {
+      alert("Error: " + error)
+    })
   }
 
   numPress(e) {
@@ -18,23 +40,21 @@ export default class extends Controller {
 
     switch (key) {
       case "CLR":
-        this.digits = []
+        this.digitsValue = []
         break
       case "DEL":
-        this.digits.pop()
+        this.digitsValue = this.digitsValue.slice(0, -1)
         break
       default:
-        if (key !== "0" || this.digits.length !== 0) this.digits.push(key)
+        if (key !== "0" || this.digitsValue.length !== 0) this.digitsValue = [...this.digitsValue, key]
     }
-
-    this.renderAmount()
   }
 
-  renderAmount() {
+  digitsValueChanged() {
     let newAmount = 0
 
-    if (this.digits.length > 0) {
-      newAmount = parseInt(this.digits.join("")) / 100.0
+    if (this.digitsValue.length > 0) {
+      newAmount = parseInt(this.digitsValue.join("")) / 100.0
     }
 
     this.amount = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(newAmount)

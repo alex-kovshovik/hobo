@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserstampsMigrationHelper
   def userstamps
     column :created_by, :bigint, null: true
