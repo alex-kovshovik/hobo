@@ -1,11 +1,11 @@
 <div class="flex flex-row mt-4">
-  <button class="flex-initial p-4">
+  <%= link_to date_expenses_path(date: @date.prev_month), class: "flex-initial p-4" do %>
     <i class="fa-solid fa-arrow-left-long"></i>
-  </button>
+  <% end %>
 
-  <h1 class="text-3xl flex-auto text-center my-auto">December 2023</h1>
+  <h1 class="text-3xl flex-auto text-center my-auto"><%= @date.strftime("%B %Y") %></h1>
 
-  <button class="flex-initial p-4">
+  <%= link_to date_expenses_path(date: @date.next_month), class: "flex-initial p-4" do %>
     <i class="fa-solid fa-arrow-right-long"></i>
-  </button>
+  <% end %>
 </div>

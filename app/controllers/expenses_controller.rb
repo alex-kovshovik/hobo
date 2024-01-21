@@ -3,7 +3,9 @@
 class ExpensesController < ApplicationController
   before_action :authenticate_user!
 
-  def index; end
+  def index
+    @date = params[:date] ? Date.parse(params[:date]) : Date.current
+  end
 
   def create
     expense = Expense.new(budget_id: expense_params[:budget_id], amount: expense_amount)

@@ -6,6 +6,7 @@ class BudgetsController < ApplicationController
   layout false
 
   def index
-    @budgets = FamilyBudgetsQuery.new(current_user.family).call(Date.current)
+    date = params[:date] ? Date.parse(params[:date]) : Date.current
+    @budgets = FamilyBudgetsQuery.new(current_user.family).call(date)
   end
 end
