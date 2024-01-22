@@ -2,7 +2,7 @@
 service: hobo-app
 
 # Name of the container image.
-image: user/hobo-app
+image: hobo-app/hobo-app
 
 # Deploy to these servers.
 servers:
@@ -10,12 +10,11 @@ servers:
 
 # Credentials for your image host.
 registry:
-  server: registry.digitalocean.com/hobo-app
-  username: alex@shovik.com
-
-  # Always use an access token rather than real password when possible.
+  server: registry.digitalocean.com
+  username:
+    - DOCKER_REGISTRY_TOKEN
   password:
-    - KAMAL_REGISTRY_PASSWORD
+    - DOCKER_REGISTRY_TOKEN
 
 # Inject ENV variables into containers (secrets come from .env).
 # Remember to run `kamal env push` after making changes!
