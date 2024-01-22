@@ -79,8 +79,7 @@ test:
 #
 production:
   <<: *default
-  host: localhost
-  port: 5432
+  host: <%= ENV["DB_HOST"] %>
   database: hobo_production
   username: hobo
-  password: <%= Rails.application.credentials.database&[:password] %>
+  password: "<%= ENV["POSTGRES_PASSWORD"] %>"
