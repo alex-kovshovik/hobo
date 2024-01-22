@@ -81,4 +81,4 @@ production:
   <<: *default
   database: hobo_production
   username: hobo
-  password: <%= ENV["HOBO_DATABASE_PASSWORD"] %>
+  password: <%= Rails.application.credentials.database.fetch(:password) %>
