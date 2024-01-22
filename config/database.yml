@@ -79,6 +79,8 @@ test:
 #
 production:
   <<: *default
+  host: localhost
+  port: 5432
   database: hobo_production
   username: hobo
-  password: <%= Rails.application.credentials.database.fetch(:password) %>
+  password: <%= Rails.application.credentials.database&[:password] %>
