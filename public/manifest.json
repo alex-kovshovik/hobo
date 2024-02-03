@@ -1,0 +1,13 @@
+{
+  "name": "HOBO: Highly Opinionated Budget Organizer",
+  "short_name": "HOBO",
+  "lang": "en-US",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "https://hobo.shovik.com/",
+  "scope": "https://hobo.shovik.com/",
+  "permissions": [
+    "unlimitedStorage",
+    "fullscreen"
+  ]
+}
