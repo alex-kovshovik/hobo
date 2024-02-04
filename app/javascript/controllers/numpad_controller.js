@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import Expense from "models/expense"
 
 export default class extends Controller {
   static targets = [ "amount", "budgetsFrame" ]
@@ -10,29 +11,13 @@ export default class extends Controller {
       budget_id: e.currentTarget.dataset.budgetId
     }
 
-    const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const formData = new FormData();
-    for (const key in data) {
-      formData.append(`expense[${key}]`, data[key]);
-    }
-
-    fetch("/expenses", {
-      method: 'POST',
-      headers: {
-        'X-CSRF-Token': csrfToken
-      },
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-      this.budgetsFrameTarget.reload()
-      this.digitsValue = []
-
-    })
-    .catch((error) => {
-      alert("Error: " + error)
-    })
+    const expense = new Expense(data)
+    expense.save()
+      .then(data => {
+        this.budgetsFrameTarget.reload()
+        this.digitsValue = []
+      })
+      .catch(error => alert("Error: " + error))
   }
 
   numPress(e) {
