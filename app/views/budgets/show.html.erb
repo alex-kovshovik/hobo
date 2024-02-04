@@ -1,0 +1,26 @@
+<div class="grow mb-4">
+  <%= turbo_frame_tag "budgets", class: "flex flex-wrap gap-2" do %>
+    <div class="bg-gray-200 rounded p-2 text-center mb-4 mt-4 w-full">
+      <span class="text-2xl font-semibold dark:text-slate-700"><%= @budget.name %></span>
+    </div>
+
+    <table class="min-w-full table-auto">
+      <thead class="justify-between">
+        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+          <th class="py-3 px-2 text-left">Date</th>
+          <th class="py-3 px-2 text-left">User</th>
+          <th class="py-3 px-2 text-left">Amount</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm font-light">
+        <% @budget.expenses.with_creator.ordered.each do |expense| %>
+          <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-2 text-left whitespace-nowrap"><%= expense.date %></td>
+            <td class="py-3 px-2 text-left"><%= expense.creator.first_name %></td>
+            <td class="py-3 px-2 text-right"><%= number_to_currency(expense.amount) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

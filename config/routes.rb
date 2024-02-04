@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :budgets, only: %i[index] do
+  resources :budgets, only: %i[index show] do
     collection do
       get ":date", to: "budgets#index", as: :date, constraints: { date: /\d{4}-\d{2}-\d{2}/ }, format: false
     end

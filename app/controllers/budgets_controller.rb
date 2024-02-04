@@ -9,4 +9,8 @@ class BudgetsController < ApplicationController
     date = params[:date] ? Date.parse(params[:date]) : Date.current.beginning_of_month
     @budgets = FamilyBudgetsQuery.new(current_user.family).call(date)
   end
+
+  def show
+    @budget = Budget.find(params[:id])
+  end
 end

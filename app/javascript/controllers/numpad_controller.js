@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import Expense from "models/expense"
 
 export default class extends Controller {
-  static targets = [ "amount", "budgetsFrame" ]
+  static targets = [ "amount", "amountWrapper", "budgetsFrame", "numpad" ]
   static values = { digits: { type: Array, default: [] } }
 
   budgetPress(e) {
@@ -11,13 +11,20 @@ export default class extends Controller {
       budget_id: e.currentTarget.dataset.budgetId
     }
 
-    const expense = new Expense(data)
-    expense.save()
-      .then(data => {
-        this.budgetsFrameTarget.reload()
-        this.digitsValue = []
-      })
-      .catch(error => alert("Error: " + error))
+    if (data.digits.length > 0) {
+      const expense = new Expense(data)
+      expense.save()
+        .then(data => {
+          this.budgetsFrameTarget.reload()
+          this.digitsValue = []
+        })
+        .catch(error => alert("Error: " + error))
+    } else {
+      // Budget pressed without an amount - show this budget within a frame
+      this.numpadTarget.classList.add("hidden")
+      this.amountWrapperTarget.classList.add("hidden")
+      this.budgetsFrameTarget.src = `/budgets/${data.budget_id}?date=`
+    }
   }
 
   numPress(e) {
