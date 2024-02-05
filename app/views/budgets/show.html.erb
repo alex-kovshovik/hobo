@@ -1,5 +1,11 @@
-<div class="grow mb-4">
-  <%= turbo_frame_tag "budgets", class: "flex flex-wrap gap-2" do %>
+<div class="flex flex-col h-screen">
+  <%= render "expenses/month_selector", prev_link: budget_path(@budget, date: @date.prev_month), next_link: budget_path(@budget, date: @date.next_month) %>
+
+  <div class="grow mb-4">
+    <div class="bg-gray-200 rounded p-2 text-center mb-4 mt-4">
+      <span data-numpad-target="amount" class="text-2xl font-semibold dark:text-slate-700"><%= @budget.name %></span>
+    </div>
+
     <% total = 0 %>
     <table class="min-w-full table-auto">
       <thead class="justify-between">
@@ -29,5 +35,5 @@
         </tr>
       </tbody>
     </table>
-  <% end %>
+  </div>
 </div>

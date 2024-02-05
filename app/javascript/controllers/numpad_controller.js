@@ -6,13 +6,13 @@ export default class extends Controller {
   static values = { digits: { type: Array, default: [] }, date: String }
 
   budgetPress(e) {
-    const dataset = e.currentTarget.dataset
     const data = {
       digits: this.digitsValue.join(""),
-      budget_id: dataset.budgetId
+      budget_id: e.currentTarget.dataset.budgetId
     }
 
     if (data.digits.length > 0) {
+      e.preventDefault()
       const expense = new Expense(data)
       expense.save()
         .then(data => {
@@ -20,12 +20,6 @@ export default class extends Controller {
           this.digitsValue = []
         })
         .catch(error => alert("Error: " + error))
-    } else {
-      // Budget pressed without an amount - show this budget within a frame
-      const budgetSpent = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(dataset.budgetSpent)
-      this.amount = `${dataset.budgetName} - ${budgetSpent}`
-      this.numpadTarget.classList.add("hidden")
-      this.budgetsFrameTarget.src = `/budgets/${data.budget_id}?date=${this.dateValue}`
     }
   }
 

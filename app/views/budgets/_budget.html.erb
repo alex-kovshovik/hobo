@@ -1,4 +1,4 @@
-<button class="flex bg-gray-100 p-1 rounded-lg shadow-md" data-action="numpad#budgetPress" data-budget-id="<%= budget.id %>" data-budget-name="<%= budget.name %>" data-budget-spent="<%= budget.spent %>">
+<%= link_to budget_path(budget, date: @date), target: "_top", class: "flex bg-gray-100 p-1 rounded-lg shadow-md", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
   <div class="flex items-center space-x-2">
     <div class="bg-green-500 rounded-sm text-slate-200 w-8 h-8 flex justify-center items-center">
       <i class="<%= budget.icon %>"></i>
@@ -8,4 +8,4 @@
   <div class="ml-1">
     <span class="text-lg text-slate-700"><%= number_to_currency(budget.spent || 0.0, precision: 0) %></span>
   </div>
-</button>
+<% end %>

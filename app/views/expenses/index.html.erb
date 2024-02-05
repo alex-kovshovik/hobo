@@ -1,5 +1,5 @@
 <div class="flex flex-col h-screen" data-controller="numpad" data-numpad-date-value="<%= @date %>">
-  <%= render "month_selector" %>
+  <%= render "month_selector", prev_link: date_expenses_path(date: @date.prev_month), next_link: date_expenses_path(date: @date.next_month) %>
   <%= render "amount_input" %>
   <%= render "budgets" %>
   <%= render "numpad" %>
