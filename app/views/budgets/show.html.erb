@@ -15,7 +15,7 @@
             total += expense.amount
             date = expense.date
           %>
-          <tr class="border-b border-gray-200 dark:border-gray-700 <%= date.sunday? || date.saturday? ? 'bg-gray-200 dark:bg-gray-700' : '' %>">
+          <tr class="border-b border-gray-300 dark:border-gray-500 <%= date.sunday? || date.saturday? ? 'bg-gray-200 dark:bg-gray-700' : '' %>">
             <td class="py-3 px-2 text-left whitespace-nowrap"><%= date.day %></td>
             <td class="py-3 px-2 text-left"><%= expense.creator.first_name %></td>
             <td class="py-3 px-2 text-right"><%= number_to_currency(expense.amount) %></td>
