@@ -3,7 +3,7 @@ import Expense from "models/expense"
 
 export default class extends Controller {
   static targets = [ "amount", "budgetsFrame", "numpad" ]
-  static values = { digits: { type: Array, default: [] } }
+  static values = { digits: { type: Array, default: [] }, date: String }
 
   budgetPress(e) {
     const dataset = e.currentTarget.dataset
@@ -25,7 +25,7 @@ export default class extends Controller {
       const budgetSpent = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(dataset.budgetSpent)
       this.amount = `${dataset.budgetName} - ${budgetSpent}`
       this.numpadTarget.classList.add("hidden")
-      this.budgetsFrameTarget.src = `/budgets/${data.budget_id}?date=`
+      this.budgetsFrameTarget.src = `/budgets/${data.budget_id}?date=${this.dateValue}`
     }
   }
 

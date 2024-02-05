@@ -4,16 +4,16 @@
     <table class="min-w-full table-auto">
       <thead class="justify-between">
         <tr class="uppercase text-sm leading-normal">
-          <th class="py-3 px-2 text-left">Date</th>
-          <th class="py-3 px-2 text-left">User</th>
+          <th class="py-3 px-2 text-left">Day</th>
+          <th class="py-3 px-2 text-left">Spender</th>
           <th class="py-3 px-2 text-right">Amount</th>
         </tr>
       </thead>
       <tbody class="text-sm font-light">
-        <% @budget.expenses.with_creator.ordered.each do |expense| %>
+        <% @expenses.each do |expense| %>
           <% total += expense.amount %>
           <tr class="border-b border-gray-200">
-            <td class="py-3 px-2 text-left whitespace-nowrap"><%= expense.date %></td>
+            <td class="py-3 px-2 text-left whitespace-nowrap"><%= expense.date.day %></td>
             <td class="py-3 px-2 text-left"><%= expense.creator.first_name %></td>
             <td class="py-3 px-2 text-right"><%= number_to_currency(expense.amount) %></td>
           </tr>
@@ -21,7 +21,7 @@
 
         <tr>
           <td class="py-3 px-2 text-left whitespace-nowrap"></td>
-          <td class="py-3 px-2 text-right font-bold">TOTAL</td>
+          <td class="py-3 px-2 text-right"></td>
           <td class="py-3 px-2 text-right text-lg"><%= number_to_currency(total) %></td>
         </tr>
       </tbody>

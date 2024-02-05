@@ -12,10 +12,11 @@ class Expense < ApplicationRecord
 
   scope :ordered, -> { order(created_at: :desc) }
   scope :with_creator, -> { includes(:creator) }
+  scope :for_month, ->(date) { where(date: date.beginning_of_month..date.end_of_month) }
 
   private
 
   def set_default_date
-    self.date ||= Date.current
+    self.date ||= Date.today
   end
 end
