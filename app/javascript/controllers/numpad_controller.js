@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import Expense from "models/expense"
 
 export default class extends Controller {
-  static targets = [ "amount", "amountWrapper", "budgetsFrame", "numpad" ]
+  static targets = [ "amount", "budgetsFrame", "numpad" ]
   static values = { digits: { type: Array, default: [] } }
 
   budgetPress(e) {
@@ -21,8 +21,8 @@ export default class extends Controller {
         .catch(error => alert("Error: " + error))
     } else {
       // Budget pressed without an amount - show this budget within a frame
+      this.amount = e.currentTarget.dataset.budgetName
       this.numpadTarget.classList.add("hidden")
-      this.amountWrapperTarget.classList.add("hidden")
       this.budgetsFrameTarget.src = `/budgets/${data.budget_id}?date=`
     }
   }
