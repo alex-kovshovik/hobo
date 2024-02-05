@@ -15,6 +15,16 @@ class ExpensesController < ApplicationController
     render json: {}, status: :created
   end
 
+  def destroy
+    expense = Expense.find(params[:id])
+    expense.destroy!
+
+    # TODO: re-add later.
+    # flash.notice = "Expense is deleted"
+
+    redirect_to expenses_path(date: expense.date.beginning_of_month)
+  end
+
   private
 
   def expense_amount

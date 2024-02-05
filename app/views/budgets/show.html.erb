@@ -24,7 +24,11 @@
           <tr class="border-b border-gray-300 dark:border-gray-500 <%= date.sunday? || date.saturday? ? 'bg-gray-200 dark:bg-gray-700' : '' %>">
             <td class="py-3 px-2 text-left whitespace-nowrap"><%= date.day %></td>
             <td class="py-3 px-2 text-left"><%= expense.creator.first_name %></td>
-            <td class="py-3 px-2 text-right"><%= number_to_currency(expense.amount) %></td>
+            <td class="py-3 px-2 text-right">
+              <%= link_to number_to_currency(expense.amount), expense_path(expense),
+                          data: { turbo_method: :delete,
+                                  turbo_confirm: "Delete this expense?" } %>
+            </td>
           </tr>
         <% end %>
 
