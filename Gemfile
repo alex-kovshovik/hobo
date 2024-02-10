@@ -75,3 +75,5 @@ gem "tailwindcss-rails", "~> 2.1"
 gem "devise", "~> 4.9"
 
 gem "factory_bot", "~> 6.4"
+
+gem "honeybadger", "~> 5.4"

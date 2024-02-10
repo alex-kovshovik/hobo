@@ -112,6 +112,7 @@ GEM
       activesupport (>= 5.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    honeybadger (5.4.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.2.3)
@@ -304,6 +305,7 @@ DEPENDENCIES
   capybara
   devise (~> 4.9)
   factory_bot (~> 6.4)
+  honeybadger (~> 5.4)
   importmap-rails
   pg (~> 1.1)
   propshaft
