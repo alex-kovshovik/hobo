@@ -32,6 +32,7 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
+    - HONEYBADGER_API_KEY
 
 # Use a different ssh user than root
 # ssh:
