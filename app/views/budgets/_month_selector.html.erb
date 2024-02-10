@@ -3,7 +3,7 @@
     <i class="fa-solid fa-arrow-left-long"></i>
   <% end %>
 
-  <h1 class="text-3xl flex-auto text-center my-auto"><%= link_to @date.strftime("%B %Y"), expenses_path(date: @date) %></h1>
+  <h1 class="text-3xl flex-auto text-center my-auto"><%= link_to @month.strftime("%B %Y"), date_budgets_path(@month) %></h1>
 
   <%= link_to next_link, class: "flex-initial p-4" do %>
     <i class="fa-solid fa-arrow-right-long"></i>

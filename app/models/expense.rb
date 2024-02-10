@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class Expense < ApplicationRecord
-  belongs_to :budget
+  belongs_to :budget, inverse_of: :expenses
+  belongs_to :creator, class_name: "User", foreign_key: "created_by", optional: true
 
   after_initialize :set_default_date
 
-  belongs_to :creator, class_name: "User", foreign_key: "created_by", optional: true
+  after_commit :broadcast_budget_update
 
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :date, presence: true
@@ -18,5 +19,10 @@ class Expense < ApplicationRecord
 
   def set_default_date
     self.date ||= Date.today
+  end
+
+  def broadcast_budget_update
+    month = date.beginning_of_month
+    broadcast_render_to budget.family, month: month, partial: "budgets/update", locals: { budget: budget, month: month }
   end
 end

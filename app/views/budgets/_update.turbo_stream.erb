@@ -1,0 +1,8 @@
+<%
+  budget = local_assigns.fetch(:budget)
+  month = local_assigns.fetch(:month)
+%>
+
+<%= turbo_stream.replace dom_id(budget) do %>
+  <%= render "budgets/budget", budget: budget, month: month %>
+<% end %>

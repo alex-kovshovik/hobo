@@ -1,22 +1,19 @@
 export default class Expense {
-  constructor(data) {
-    this.digits = data.digits
-    this.budgetId = data.budget_id
+  constructor(budgetId, digits) {
+    this.budgetId = budgetId
+    this.digits = digits
   }
 
   save() {
     const data = {
       digits: this.digits,
-      budget_id: this.budgetId
     }
 
     const csrfToken = document.querySelector("meta[name=csrf-token]").content
     const formData = new FormData();
-    for (const key in data) {
-      formData.append(`expense[${key}]`, data[key]);
-    }
+    formData.append(`expense[digits]`, this.digits);
 
-    return fetch("/expenses", {
+    return fetch(`/budgets/${this.budgetId}/expenses`, {
       method: 'POST',
       headers: {
         'X-CSRF-Token': csrfToken

@@ -6,17 +6,14 @@ export default class extends Controller {
   static values = { digits: { type: Array, default: [] }, date: String }
 
   budgetPress(e) {
-    const data = {
-      digits: this.digitsValue.join(""),
-      budget_id: e.currentTarget.dataset.budgetId
-    }
+    const digits = this.digitsValue.join("")
+    const budgetId = e.currentTarget.dataset.budgetId
 
-    if (data.digits.length > 0) {
+    if (digits.length > 0) {
       e.preventDefault()
-      const expense = new Expense(data)
+      const expense = new Expense(budgetId, digits)
       expense.save()
         .then(data => {
-          this.budgetsFrameTarget.reload()
           this.digitsValue = []
         })
         .catch(error => alert("Error: " + error))

@@ -1,31 +1,36 @@
 # frozen_string_literal: true
 
 class ExpensesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :find_budget
 
   def index
-    @date = params[:date] ? Date.parse(params[:date]) : Date.today.beginning_of_month
+    date_param = params[:date]
+
+    @month = date_param.present? ? Date.parse(date_param) : Date.current.beginning_of_month
+    @expenses = @budget.expenses.with_creator.for_month(@month).ordered
   end
 
   def create
-    expense = Expense.new(budget_id: expense_params[:budget_id], amount: expense_amount)
-    expense.budget.family = current_user.family
-    expense.save!
+    @budget.expenses.create!(amount: expense_amount)
 
     render json: {}, status: :created
   end
 
   def destroy
-    expense = Expense.find(params[:id])
+    expense = @budget.expenses.find(params[:id])
     expense.destroy!
 
     # TODO: re-add later.
     # flash.notice = "Expense is deleted"
 
-    redirect_to expenses_path(date: expense.date.beginning_of_month)
+    redirect_to date_budget_expenses_path(@budget, expense.date.beginning_of_month)
   end
 
   private
+
+  def find_budget
+    @budget = Budget.find(params[:budget_id])
+  end
 
   def expense_amount
     expense_params[:digits].to_i / 100.0
