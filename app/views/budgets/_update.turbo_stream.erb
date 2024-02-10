@@ -1,8 +1,9 @@
 <%
   budget = local_assigns.fetch(:budget)
   month = local_assigns.fetch(:month)
+  spent = budget.expenses.for_month(month).sum(:amount) || 0.0
 %>
 
 <%= turbo_stream.replace dom_id(budget) do %>
-  <%= render "budgets/budget", budget: budget, month: month %>
+  <%= render "budgets/budget", budget: budget, spent: spent %>
 <% end %>
