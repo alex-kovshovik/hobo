@@ -10,7 +10,8 @@ servers:
     hosts:
       - 164.92.91.202
     options:
-      "add-host": host.docker.internal:host-gateway
+      add-host: host.docker.internal:host-gateway
+      network: "hobo"
     labels:
       traefik.http.routers.hobo-web.rule: Host(`hobo.shovik.com`)
       traefik.http.routers.hobo-web.entrypoints: websecure
@@ -28,7 +29,8 @@ registry:
 # Remember to run `kamal env push` after making changes!
 env:
   clear:
-    DB_HOST: 164.92.91.202
+    DB_HOST: hobo-app-db
+    REDIS_URL: "redis://hobo-app-redis:6379/0"
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
@@ -53,7 +55,6 @@ accessories:
   db:
     image: postgres:15
     host: 164.92.91.202
-    port: 5432
     env:
       clear:
         POSTGRES_USER: 'hobo'
@@ -62,13 +63,16 @@ accessories:
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
+    options:
+      network: "hobo"
 
-#   redis:
-#     image: redis:7.0
-#     host: 192.168.0.2
-#     port: 6379
-#     directories:
-#       - data:/data
+  redis:
+    image: redis:latest
+    host: 164.92.91.202
+    directories:
+      - data:/data
+    options:
+      network: "hobo"
 
 # Configure custom arguments for Traefik
 traefik:
@@ -77,6 +81,7 @@ traefik:
       - 443:443
     volume:
       - "/letsencrypt/acme.json:/letsencrypt/acme.json"
+    network: "hobo"
   args:
     entrypoints.web.address: ":80"
     entrypoints.websecure.address: ":443"
