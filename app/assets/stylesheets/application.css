@@ -1,4 +1,9 @@
-/* Application styles */
+/* Global element styles */
+body {
+  touch-action: manipulation;
+}
+
+/* Application custom styles */
 
 .clipboard-button {
   display: none;
