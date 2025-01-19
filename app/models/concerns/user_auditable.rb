@@ -18,10 +18,10 @@ module UserAuditable
   private
 
   def stamp_current_user(*attributes)
-    return if ::AuditService.current_user.nil?
+    return if Current.user.nil?
 
     Array(attributes).each do |attribute|
-      write_attribute(attribute, ::AuditService.current_user.id)
+      write_attribute(attribute, Current.user.id)
     end
   end
 end

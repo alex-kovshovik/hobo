@@ -12,3 +12,15 @@ body {
 .clipboard--supported .clipboard-button {
   display: initial;
 }
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+}

@@ -1,11 +1,11 @@
-<h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-center text-cyan-600 p-6">Welcome to HOBO!</h1>
+<h1>Welcome to HOBO!</h1>
 
-<p class="px-12">Highly opinionated budget organizer</p>
+<p>Highly opinionated budget organizer</p>
 
-<p class="flex justify-center mt-6">
-  <% if user_signed_in? %>
-    <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-gray-600 px-3 py-2 rounded-md text-lg" %>
+<p>
+  <% if Current.user %>
+    <%= link_to "Logout", session_path, data: { turbo_method: :delete } %>
   <% else %>
-    <%= link_to "Login", new_user_session_path, class: "text-gray-600 px-3 py-2 rounded-md text-lg" %>
+    <%= link_to "Login", session_path %>
   <% end %>
 </p>

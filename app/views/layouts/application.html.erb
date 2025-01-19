@@ -1,42 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Hobo</title>
+  <head>
+    <title><%= content_for(:title) || "HOBO: Highly Opinionated Budget Organizer" %></title>
 
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-status-bar-style" content="black" />
-  <link rel="manifest" href="/manifest.json" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"/>
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  <%= javascript_importmap_tags %>
-  <script src="https://kit.fontawesome.com/2de86b198d.js" crossorigin="anonymous"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-  <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
-  <%= yield :head %>
-</head>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-status-bar-style" content="black" />
 
-<body class="bg-gray-100 dark:bg-slate-800 dark:text-slate-300">
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-  <!-- Flash messages -->
-  <% if notice.present? %>
-    <div id="notice" class="fixed top-0 bg-green-500 text-white px-4 py-2 rounded z-50 m-4">
-      <%= notice %>
-    </div>
-  <% end %>
-  <% if alert.present? %>
-    <div id="alert" class="fixed top-0 bg-red-500 text-white px-4 py-2 rounded z-50 m-4 mt-12">
-      <%= alert %>
-    </div>
-  <% end %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
-  <main class="container px-5">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"/>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <script src="https://kit.fontawesome.com/2de86b198d.js" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+    <%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+
     <%= yield %>
-  </main>
-</body>
+  </body>
 </html>

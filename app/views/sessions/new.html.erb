@@ -1,11 +1,37 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<div class="login-container">
+    <div class="login-box">
+        <div class="box">
+            <h1 class="title has-text-centered mb-5">Sign In</h1>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+            <%= form_with url: session_path do |form| %>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control has-icons-left">
+                        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "input" %>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
 
-<%= link_to "Forgot password?", new_password_path %>
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control has-icons-left">
+                        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input" %>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field mt-5">
+                    <%= form.submit "Sign in", class: "button is-primary is-fullwidth" %>
+                </div>
+
+                <div class="has-text-centered mt-4">
+                    <%= link_to "Forgot password?", new_password_path %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
