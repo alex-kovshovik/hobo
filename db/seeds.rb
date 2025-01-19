@@ -1,13 +1,15 @@
+password_digest = BCrypt::Password.create("12341234")
+
 user = User.create!(
+  email_address: "test@test.com",
+  password_digest: password_digest,
+
   first_name: "Tester",
-  last_name: "Test",
-  email: "testemail@testdomain.moc",
-  password: "12341234"
+  last_name: "Test"
 )
 
 family = Family.create!(
-  owner: user,
-  name: "Test Family",
+  name: "Test Family Group",
 )
 
 user.update!(family: family)
