@@ -1,7 +1,5 @@
-<div class="grow mb-4">
-  <div class="flex flex-wrap gap-2">
-    <% @budgets.each do |budget| %>
-      <%= render "budget", budget: budget %>
-    <% end %>
-  </div>
+<div class="buttons">
+  <% @budgets.each do |budget| %>
+    <%= render "budget", budget: budget %>
+  <% end %>
 </div>

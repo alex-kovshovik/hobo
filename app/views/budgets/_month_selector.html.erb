@@ -1,11 +1,17 @@
-<div class="flex flex-row mt-4">
-  <%= link_to prev_link, class: "flex-initial p-4" do %>
-    <i class="fa-solid fa-arrow-left-long"></i>
-  <% end %>
+<nav class="level is-mobile">
+  <div class="level-left">
+    <%= link_to prev_link do %>
+      <i class="title is-4 fa-solid fa-arrow-left-long"></i>
+    <% end %>
+  </div>
 
-  <h1 class="text-3xl flex-auto text-center my-auto"><%= link_to @month.strftime("%B %Y"), date_budgets_path(@month) %></h1>
+  <div class="level-item has-text-centered">
+    <h1 class="title is-4"><%= link_to @month.strftime("%B %Y"), date_budgets_path(@month) %></h1>
+  </div>
 
-  <%= link_to next_link, class: "flex-initial p-4" do %>
-    <i class="fa-solid fa-arrow-right-long"></i>
-  <% end %>
-</div>
+  <div class="level-right">
+    <%= link_to next_link do %>
+      <i class="title is-4 fa-solid fa-arrow-right-long"></i>
+    <% end %>
+  </div>
+</nav>

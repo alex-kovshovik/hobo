@@ -1,12 +1,24 @@
 <% spent ||= nil %>
-<%= link_to budget_expenses_path(budget, date: @month), id: dom_id(budget), class: "flex bg-gray-100 p-1 rounded-lg shadow-md", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
-  <div class="flex items-center space-x-2">
-    <div class="bg-green-500 rounded-sm text-slate-200 w-8 h-8 flex justify-center items-center">
-      <i class="<%= budget.icon %>"></i>
+<% spent_amount = spent || budget.spent || 0.0 %>
+<%= link_to budget_expenses_path(budget, date: @month), id: dom_id(budget), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.75rem;", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
+  <div class="is-flex is-flex-direction-column is-align-items-stretch" style="width: 100%;">
+    <!-- Icon, Name, and Amount Row -->
+    <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+      <div class="is-flex is-align-items-center">
+        <span class="icon mr-2">
+          <i class="<%= budget.icon %>"></i>
+        </span>
+        <span class="has-text-weight-medium"><%= budget.name %></span>
+      </div>
+      <span class="has-text-weight-bold"><%= number_to_currency(spent_amount, precision: 0) %></span>
     </div>
-    <span class="text text-slate-700"><%= budget.name %></span>
-  </div>
-  <div class="ml-1">
-    <span class="text-lg text-slate-700"><%= number_to_currency(spent || budget.spent || 0.0, precision: 0) %></span>
+
+    <!-- Progress Bar -->
+    <div class="is-relative" style="height: 0.75rem;">
+      <% progress_class = budget.name == "Gas" ? "is-danger" : "is-primary" %>
+      <progress class="progress is-small mb-0 <%= progress_class %>" value="<%= spent_amount %>" max="<%= budget.amount %>"><%= (spent_amount / budget.amount) * 100 %> %</progress>
+      <div class="has-background-dark" style="position: absolute; top: 0; bottom: 0; width: 2px; left: 50%; transform: translateX(-50%);"></div>
+    </div>
   </div>
 <% end %>
+

@@ -1,7 +1,13 @@
 <%= turbo_stream_from Current.user.family, month: @month %>
-<div class="flex flex-col h-screen" data-controller="numpad" data-numpad-date-value="<%= @month %>">
-  <%= render "month_selector", prev_link: date_budgets_path(date: @month.prev_month), next_link: date_budgets_path(date: @month.next_month) %>
-  <%= render "amount_input" %>
-  <%= render "budgets" %>
-  <%= render "numpad" %>
-</div>
+
+<section class="section is-full-height is-flex is-flex-direction-column is-justify-content-space-between" data-controller="numpad" data-numpad-date-value="<%= @month %>">
+  <div class="container">
+    <%= render "month_selector", prev_link: date_budgets_path(date: @month.prev_month), next_link: date_budgets_path(date: @month.next_month) %>
+    <%= render "amount_input" %>
+    <%= render "budgets" %>
+  </div>
+
+  <div class="container is-flex is-flex-direction-column is-justify-content-flex-end">
+    <%= render "numpad" %>
+  </div>
+</section>

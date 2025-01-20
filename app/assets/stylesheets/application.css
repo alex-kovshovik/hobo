@@ -3,6 +3,10 @@ body {
   touch-action: manipulation;
 }
 
+.is-full-height {
+  min-height: 100vh;
+}
+
 /* Application custom styles */
 
 .clipboard-button {
@@ -13,12 +17,15 @@ body {
   display: initial;
 }
 
+/* Login page styles */
+
 .login-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .login-box {
   width: 100%;
   max-width: 400px;

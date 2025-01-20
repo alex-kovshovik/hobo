@@ -42,7 +42,7 @@ export default class extends Controller {
       newAmount = parseInt(this.digitsValue.join("")) / 100.0
     }
 
-    this.amount = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(newAmount)
+    this.amount = new Intl.NumberFormat("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(newAmount)
   }
 
   set amount(newAmount) {
