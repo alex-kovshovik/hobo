@@ -1,7 +1,10 @@
 {
   "name": "HOBO: Highly Opinionated Budget Organizer",
   "short_name": "HOBO",
+  "start_url": "/budgets",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
   "lang": "en-US",
-  "display": "standalone",
+  "display": "fullscreen",
   "description": "A very simple family expense tracker"
 }
