@@ -12,7 +12,7 @@
 
 require "csv"
 
-CSV.foreach("../expenses.csv", headers: true) do |row|
+CSV.foreach("tmp/expenses.csv", headers: true) do |row|
   budget = Budget.find_by(name: row["budget"])
   next if budget.nil?
 
