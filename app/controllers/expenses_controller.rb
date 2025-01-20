@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ExpensesController < ApplicationController
-  before_action :authenticate_user!, :find_budget
+  before_action :find_budget
 
   def index
     date_param = params[:date]
