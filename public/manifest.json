@@ -2,6 +2,7 @@
   "name": "HOBO: Highly Opinionated Budget Organizer",
   "short_name": "HOBO",
   "start_url": "/budgets",
+  "scope": "/",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "lang": "en-US",
