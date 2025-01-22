@@ -22,7 +22,6 @@ class Expense < ApplicationRecord
   end
 
   def broadcast_budget_update
-    month = date.beginning_of_month
-    broadcast_render_to budget.family, month: month, partial: "budgets/update", locals: { budget: budget, month: month }
+    budget.broadcast_update(date)
   end
 end

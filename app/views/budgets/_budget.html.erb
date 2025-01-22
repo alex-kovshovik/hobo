@@ -1,12 +1,4 @@
-<%# TODO: refactor this to use a helper or presenter %>
-<% spent ||= nil %>
-<% month ||= @month %>
-
-<% spent_amount = spent || budget.spent || 0.0 %>
-<% percent_spent = spent_amount / budget.amount %>
-<% percent_of_month = Date.current.day / month.end_of_month.day.to_f %>
-
-<%= link_to budget_expenses_path(budget, date: month), id: dom_id(budget), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.75rem;", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
+<%= link_to budget_expenses_path(budget, date: budget.month), id: dom_id(budget), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.75rem;", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
   <div class="is-flex is-flex-direction-column is-align-items-stretch" style="width: 100%;">
     <!-- Icon, Name, and Amount Row -->
     <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
@@ -16,16 +8,15 @@
         </span>
         <span class="has-text-weight-medium"><%= budget.name %></span>
       </div>
-      <span class="has-text-weight-bold"><%= number_to_currency(spent_amount, precision: 0) %></span>
+      <span class="has-text-weight-bold"><%= number_to_currency(budget.spent, precision: 0) %></span>
     </div>
 
     <!-- Progress Bar -->
-
     <div class="is-relative" style="height: 0.75rem;">
-      <% progress_class = percent_spent > percent_of_month ? "is-danger" : "is-primary" %>
+      <% progress_class = budget.percent_spent > budget.percent_of_month ? "is-danger" : "is-primary" %>
 
-      <progress class="progress is-small mb-0 <%= progress_class %>" value="<%= spent_amount %>" max="<%= budget.amount %>"><%= percent_spent * 100 %> %</progress>
-      <div class="has-background-dark" style="position: absolute; top: 0; bottom: 0; width: 2px; left: <%= percent_of_month * 100 %>%; transform: translateX(-50%);"></div>
+      <progress class="progress is-small mb-0 <%= progress_class %>" value="<%= budget.spent %>" max="<%= budget.amount %>"><%= budget.percent_spent %>%</progress>
+      <div class="has-background-dark" style="position: absolute; top: 0; bottom: 0; width: 2px; left: <%= budget.percent_of_month %>%; transform: translateX(-50%);"></div>
     </div>
   </div>
 <% end %>

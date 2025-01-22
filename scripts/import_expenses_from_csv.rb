@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The CSV file was produced by the following SQL:
 #
 # select
