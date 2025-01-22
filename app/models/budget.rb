@@ -12,6 +12,6 @@ class Budget < ApplicationRecord
     found_budget = FamilyBudgetsQuery.new(family).call(month, budget_id: id).first
     presented_budget = BudgetPresenter.new(found_budget, month)
 
-    broadcast_render_to family, month: month, partial: "budgets/update", locals: { budget: presented_budget }
+    broadcast_render_to family, partial: "budgets/update", locals: { budget: presented_budget }
   end
 end
