@@ -1,4 +1,4 @@
-<%= link_to budget_expenses_path(budget, date: budget.month), id: dom_id(budget), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.75rem;", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
+<%= link_to budget_expenses_path(budget, date: budget.month), id: dom_id(budget, budget.month), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.75rem;", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
   <div class="is-flex is-flex-direction-column is-align-items-stretch" style="width: 100%;">
     <!-- Icon, Name, and Amount Row -->
     <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
