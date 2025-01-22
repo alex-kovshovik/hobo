@@ -5,5 +5,5 @@
 %>
 
 <%= turbo_stream.replace dom_id(budget) do %>
-  <%= render "budgets/budget", budget: budget, spent: spent %>
+  <%= render "budgets/budget", budget: budget, spent: spent, month: month %>
 <% end %>
