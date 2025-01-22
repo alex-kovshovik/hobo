@@ -2,44 +2,47 @@
   <div class="container">
     <%= render "budgets/month_selector", prev_link: date_budget_expenses_path(@budget, @month.prev_month), next_link: date_budget_expenses_path(@budget, @month.next_month) %>
 
-    <div class="grow mb-4">
-      <div class="bg-gray-200 rounded p-2 text-center mb-4 mt-4">
-        <span data-numpad-target="amount" class="text-2xl font-semibold dark:text-slate-700"><%= @budget.name %></span>
+    <nav class="level is-mobile">
+      <div class="level-left">
+        <h2 class="subtitle is-3"><%= @budget.name %></h2>
       </div>
+      <div class="level-right">
+        <h2 class="subtitle is-3"><%= number_to_currency(@budget.amount, precision: 0) %></h2>
+      </div>
+    </nav>
 
-      <% total = 0 %>
-      <table class="table is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th>Spender</th>
-            <th>Amount</th>
+    <% total = 0 %>
+    <table class="table is-striped is-fullwidth">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Spender</th>
+          <th class="has-text-right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @expenses.each do |expense| %>
+          <%
+            total += expense.amount
+            date = expense.date
+          %>
+          <tr class="border-b border-gray-300 dark:border-gray-500 <%= date.sunday? || date.saturday? ? 'bg-gray-200 dark:bg-gray-700' : '' %>">
+            <td><%= date.day %></td>
+            <td><%= expense.creator.first_name %></td>
+            <td class="has-text-right">
+              <%= link_to number_to_currency(expense.amount, precision: 0), budget_expense_path(@budget, expense),
+                          data: { turbo_method: :delete,
+                                  turbo_confirm: "Delete this expense?" } %>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <% @expenses.each do |expense| %>
-            <%
-              total += expense.amount
-              date = expense.date
-            %>
-            <tr class="border-b border-gray-300 dark:border-gray-500 <%= date.sunday? || date.saturday? ? 'bg-gray-200 dark:bg-gray-700' : '' %>">
-              <td><%= date.day %></td>
-              <td><%= expense.creator.first_name %></td>
-              <td>
-                <%= link_to number_to_currency(expense.amount, precision: 0), budget_expense_path(@budget, expense),
-                            data: { turbo_method: :delete,
-                                    turbo_confirm: "Delete this expense?" } %>
-              </td>
-            </tr>
-          <% end %>
+        <% end %>
 
-          <tr>
-            <td></td>
-            <td></td>
-            <td><%= number_to_currency(total, precision: 0) %></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><%= number_to_currency(total, precision: 0) %></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

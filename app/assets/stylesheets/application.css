@@ -1,6 +1,8 @@
 /* Global element styles */
 body {
   touch-action: manipulation;
+  background-image: url('/so-white.png');
+  background-repeat: repeat;
 }
 
 .is-full-height {
