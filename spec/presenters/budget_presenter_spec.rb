@@ -40,8 +40,8 @@ describe BudgetPresenter do
     context "when the month is not the current month" do
       let(:month) { Date.current.prev_month.beginning_of_month }
 
-      it "returns nil" do
-        expect(subject.percent_of_month).to be_nil
+      it "returns 100" do
+        expect(subject.percent_of_month).to eq(100)
       end
     end
   end

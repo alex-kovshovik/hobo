@@ -13,7 +13,7 @@ class BudgetPresenter < SimpleDelegator
   end
 
   def percent_of_month
-    return nil if month != Date.current.beginning_of_month
+    return 100 if month != Date.current.beginning_of_month
 
     (Date.current.day / Date.current.end_of_month.day.to_f) * 100
   end

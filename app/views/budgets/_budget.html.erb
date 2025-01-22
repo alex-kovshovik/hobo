@@ -16,7 +16,9 @@
       <% progress_class = budget.percent_spent > budget.percent_of_month ? "is-danger" : "is-primary" %>
 
       <progress class="progress is-small mb-0 <%= progress_class %>" value="<%= budget.spent %>" max="<%= budget.amount %>"><%= budget.percent_spent %>%</progress>
-      <div class="has-background-dark" style="position: absolute; top: 0; bottom: 0; width: 2px; left: <%= budget.percent_of_month %>%; transform: translateX(-50%);"></div>
+      <% if budget.percent_of_month < 100 %>
+        <div class="has-background-dark" style="position: absolute; top: 0; bottom: 0; width: 2px; left: <%= budget.percent_of_month %>%; transform: translateX(-50%);"></div>
+      <% end %>
     </div>
   </div>
 <% end %>
