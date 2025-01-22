@@ -20,9 +20,6 @@ class ExpensesController < ApplicationController
     expense = @budget.expenses.find(params[:id])
     expense.destroy!
 
-    # TODO: re-add later.
-    # flash.notice = "Expense is deleted"
-
     redirect_to date_budget_expenses_path(@budget, expense.date.beginning_of_month)
   end
 
@@ -33,7 +30,7 @@ class ExpensesController < ApplicationController
   end
 
   def expense_amount
-    expense_params[:digits].to_i / 100.0
+    expense_params[:digits].to_i
   end
 
   def expense_params

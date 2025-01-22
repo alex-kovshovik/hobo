@@ -39,10 +39,10 @@ export default class extends Controller {
     let newAmount = 0
 
     if (this.digitsValue.length > 0) {
-      newAmount = parseInt(this.digitsValue.join("")) / 100.0
+      newAmount = parseInt(this.digitsValue.join(""))
     }
 
-    this.amount = new Intl.NumberFormat("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(newAmount)
+    this.amount = newAmount
   }
 
   set amount(newAmount) {
