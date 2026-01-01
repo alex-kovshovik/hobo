@@ -7,7 +7,7 @@ image: hobo-app/hobo-app
 # Deploy to these servers.
 servers:
   web:
-    - 165.232.134.117
+    - 167.172.214.69
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -74,6 +74,7 @@ asset_path: /rails/public/assets
 # Configure the image builder.
 builder:
   arch: amd64
+  cache: false
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
