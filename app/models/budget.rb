@@ -5,7 +5,7 @@ class Budget < ApplicationRecord
   has_many :expenses, dependent: :destroy
 
   def cache_key_with_date(date)
-    "#{cache_key}/#{date.strftime('%Y-%m')}"
+    "#{cache_key_with_version}/#{date.strftime('%Y-%m')}"
   end
 
   def broadcast_update(date)
