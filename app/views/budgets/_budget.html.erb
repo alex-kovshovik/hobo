@@ -1,25 +1,29 @@
-<%= link_to budget_expenses_path(budget, date: budget.month), id: dom_id(budget, budget.month), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.75rem;", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
-  <div class="is-flex is-flex-direction-column is-align-items-stretch" style="width: 100%;">
-    <!-- Icon, Name, and Amount Row -->
-    <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
-      <div class="is-flex is-align-items-center">
-        <span class="icon mr-2">
-          <i class="<%= budget.icon %>"></i>
-        </span>
-        <span class="has-text-weight-medium"><%= budget.name %></span>
+<% date = local_assigns.fetch(:date, @date) %>
+<%= cache [budget.cache_key_with_date(date)] do %>
+  <%= link_to budget_expenses_path(budget, date: date), id: dom_id(budget, date), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.75rem;", data: { action: "numpad#budgetPress", budget_id: budget.id } do %>
+    <div class="is-flex is-flex-direction-column is-align-items-stretch" style="width: 100%;">
+      <!-- Icon, Name, and Amount Row -->
+      <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+        <div class="is-flex is-align-items-center">
+          <span class="icon mr-2">
+            <i class="<%= budget.icon %>"></i>
+          </span>
+          <span class="has-text-weight-medium"><%= budget.name %></span>
+        </div>
+        <span class="has-text-weight-medium"><%= number_to_currency(budget.total_spent, precision: 0) %></span>
       </div>
-      <span class="has-text-weight-medium"><%= number_to_currency(budget.spent, precision: 0) %></span>
-    </div>
 
-    <!-- Progress Bar -->
-    <div class="is-relative" style="height: 0.75rem;">
-      <% progress_class = budget.percent_spent > budget.percent_of_month ? "is-danger" : "is-primary" %>
+      <!-- Progress Bar -->
+      <div class="is-relative" style="height: 0.75rem;">
+        <%
+          progress_class = budget.percent_spent > budget.percent_of_month ? "is-danger" : "is-primary"
+        %>
 
-      <progress class="progress is-small mb-0 <%= progress_class %>" value="<%= budget.spent %>" max="<%= budget.amount %>"><%= budget.percent_spent %>%</progress>
-      <% if budget.percent_of_month < 100 %>
-        <div class="has-background-dark" style="position: absolute; top: 0; bottom: 0; width: 2px; left: <%= budget.percent_of_month %>%; transform: translateX(-50%);"></div>
-      <% end %>
+        <progress class="progress is-small mb-0 <%= progress_class %>" value="<%= budget.total_spent %>" max="<%= budget.amount %>"><%= budget.percent_spent %>%</progress>
+        <% if budget.percent_of_month < 100 %>
+          <div class="has-background-dark" style="position: absolute; top: 0; bottom: 0; width: 2px; left: <%= budget.percent_of_month %>%; transform: translateX(-50%);"></div>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
-

@@ -1,8 +1,8 @@
-<%= turbo_stream_from Current.user.family, month: @month %>
+<%= turbo_stream_from Current.user.family, date: @date %>
 
-<section class="section is-full-height is-flex is-flex-direction-column is-justify-content-space-between" data-controller="numpad" data-numpad-date-value="<%= @month %>">
+<section class="section is-full-height is-flex is-flex-direction-column is-justify-content-space-between" data-controller="numpad" data-numpad-date-value="<%= @date %>">
   <div class="container">
-    <%= render "month_selector", prev_link: date_budgets_path(date: @month.prev_month), next_link: date_budgets_path(date: @month.next_month) %>
+    <%= render "month_selector", prev_link: date_budgets_path(date: @date.prev_month), next_link: date_budgets_path(date: @date.next_month) %>
     <%= render "budgets" %>
   </div>
 

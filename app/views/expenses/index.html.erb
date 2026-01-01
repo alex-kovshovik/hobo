@@ -1,6 +1,6 @@
 <div class="section">
   <div class="container">
-    <%= render "budgets/month_selector", prev_link: date_budget_expenses_path(@budget, @month.prev_month), next_link: date_budget_expenses_path(@budget, @month.next_month) %>
+    <%= render "budgets/month_selector", prev_link: date_budget_expenses_path(@budget, @date.prev_month), next_link: date_budget_expenses_path(@budget, @date.next_month) %>
 
     <nav class="level is-mobile">
       <div class="level-left">

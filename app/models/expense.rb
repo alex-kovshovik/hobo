@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Expense < ApplicationRecord
-  belongs_to :budget, inverse_of: :expenses
+  belongs_to :budget, inverse_of: :expenses, touch: true
   belongs_to :creator, class_name: "User", foreign_key: "created_by", optional: true
 
   after_initialize :set_default_date

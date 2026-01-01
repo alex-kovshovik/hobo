@@ -4,18 +4,35 @@ require "rails_helper"
 
 describe BudgetPresenter do
   subject do
-    found_budget = FamilyBudgetsQuery.new(family).call(month, budget_id: budget.id).first
-    described_class.new(found_budget, month)
+    described_class.new(budget, date)
   end
 
   let(:family) { create(:family) }
   let(:budget) { create(:budget, family: family, amount: 100) }
-  let(:month) { Date.current.beginning_of_month }
+  let(:date) { Date.current.beginning_of_month }
+
+  describe "#total_spent" do
+    context "when there are expenses" do
+      before do
+        create(:expense, budget: budget, amount: 50, date: date)
+      end
+
+      it "returns the total spent" do
+        expect(subject.total_spent).to eq(50)
+      end
+    end
+
+    context "when there are no expenses" do
+      it "returns 0" do
+        expect(subject.total_spent).to eq(0)
+      end
+    end
+  end
 
   describe "#percent_spent" do
     context "when there are expenses" do
       before do
-        create(:expense, budget: budget, amount: 50, date: month)
+        create(:expense, budget: budget, amount: 50, date: date)
       end
 
       it "calculates the percent spent" do
@@ -38,7 +55,7 @@ describe BudgetPresenter do
     end
 
     context "when the month is not the current month" do
-      let(:month) { Date.current.prev_month.beginning_of_month }
+      let(:date) { Date.current.prev_month.beginning_of_month }
 
       it "returns 100" do
         expect(subject.percent_of_month).to eq(100)

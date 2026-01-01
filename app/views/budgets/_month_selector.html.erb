@@ -6,7 +6,7 @@
   </div>
 
   <div class="level-item has-text-centered">
-    <h1 class="title is-4"><%= link_to @month.strftime("%B %Y"), date_budgets_path(@month) %></h1>
+    <h1 class="title is-4"><%= link_to @date.strftime("%B %Y"), date_budgets_path(date: @date) %></h1>
   </div>
 
   <div class="level-right">

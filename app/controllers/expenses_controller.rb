@@ -4,10 +4,8 @@ class ExpensesController < ApplicationController
   before_action :find_budget
 
   def index
-    date_param = params[:date]
-
-    @month = date_param.present? ? Date.parse(date_param) : Date.current.beginning_of_month
-    @expenses = @budget.expenses.with_creator.for_month(@month).ordered
+    @date = params[:date].present? ? Date.parse(params[:date]) : Date.current.beginning_of_month
+    @expenses = @budget.expenses.with_creator.for_month(@date).ordered
   end
 
   def create

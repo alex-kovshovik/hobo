@@ -1,5 +1,5 @@
 <div class="buttons">
   <% @budgets.each do |budget| %>
-    <%= render "budget", budget: budget %>
+    <%= render "budget", budget: budget, date: budget.date %>
   <% end %>
 </div>
