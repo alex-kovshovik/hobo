@@ -9,7 +9,7 @@ class ExpensesController < ApplicationController
   end
 
   def create
-    @budget.expenses.create!(amount: expense_amount)
+    @budget.expenses.create!(amount: expense_amount, date: expense_date)
 
     render json: {}, status: :created
   end
@@ -31,7 +31,11 @@ class ExpensesController < ApplicationController
     expense_params[:digits].to_i
   end
 
+  def expense_date
+    Date.parse(expense_params[:date])
+  end
+
   def expense_params
-    params.require(:expense).permit(:budget_id, :digits)
+    params.require(:expense).permit(:budget_id, :digits, :date)
   end
 end

@@ -11,7 +11,7 @@ export default class extends Controller {
 
     if (digits.length > 0) {
       e.preventDefault()
-      const expense = new Expense(budgetId, digits)
+      const expense = new Expense(budgetId, digits, this.dateValue)
       expense.save()
         .then(data => {
           this.digitsValue = []
