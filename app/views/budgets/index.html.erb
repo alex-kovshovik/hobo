@@ -1,13 +1,19 @@
 <%= turbo_stream_from Current.user.family, date: @date %>
 
-<section class="section is-full-height is-flex is-flex-direction-column is-justify-content-space-between" data-controller="numpad" data-numpad-date-value="<%= @date %>">
-  <div class="container">
+<section class="section is-full-height is-flex is-flex-direction-column" data-controller="numpad" data-numpad-date-value="<%= @date %>">
+  <div class="container is-flex-grow-1">
     <%= render "month_selector", prev_link: date_budgets_path(date: @date.prev_month), next_link: date_budgets_path(date: @date.next_month) %>
     <%= render "budgets" %>
   </div>
 
-  <div class="container is-flex is-flex-direction-column is-justify-content-flex-end">
-    <%= render "amount_input" %>
-    <%= render "numpad" %>
+  <div class="container">
+    <button class="button is-primary is-large is-fullwidth" style="padding: 1.25rem;" data-action="numpad#openModal">
+      <span class="icon">
+        <i class="fa-solid fa-plus"></i>
+      </span>
+      <span>Add Expense</span>
+    </button>
   </div>
+
+  <%= render "expense_modal" %>
 </section>

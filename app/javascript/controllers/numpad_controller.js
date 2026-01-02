@@ -2,8 +2,19 @@ import { Controller } from "@hotwired/stimulus"
 import Expense from "models/expense"
 
 export default class extends Controller {
-  static targets = [ "amount", "budgetsFrame", "numpad" ]
+  static targets = [ "amount", "modal" ]
   static values = { digits: { type: Array, default: [] }, date: String }
+
+  openModal() {
+    this.modalTarget.classList.add("is-active")
+    document.documentElement.classList.add("is-clipped")
+  }
+
+  closeModal() {
+    this.modalTarget.classList.remove("is-active")
+    document.documentElement.classList.remove("is-clipped")
+    this.digitsValue = []
+  }
 
   budgetPress(e) {
     const digits = this.digitsValue.join("")
@@ -15,6 +26,7 @@ export default class extends Controller {
       expense.save()
         .then(data => {
           this.digitsValue = []
+          this.closeModal()
         })
         .catch(error => alert("Error: " + error))
     }

@@ -1,0 +1,14 @@
+<div class="modal" data-numpad-target="modal">
+  <div class="modal-background" data-action="click->numpad#closeModal"></div>
+  <div class="modal-content" style="max-width: 400px;">
+    <div class="box">
+      <%= render "amount_input" %>
+      <%= render "numpad" %>
+      <div class="mt-4">
+        <p class="has-text-weight-medium mb-3">Select Budget:</p>
+        <%= render "modal_budgets" %>
+      </div>
+    </div>
+  </div>
+  <button class="modal-close is-large" aria-label="close" data-action="numpad#closeModal"></button>
+</div>
