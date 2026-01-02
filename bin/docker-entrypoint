@@ -1,33 +1,10 @@
 #!/bin/bash -e
 
-prepare_databases() {
-  ./bin/rails db:prepare
-
-  # Prepare Solid Queue/Cache/Cable databases (create and load schema if needed)
-  for db in queue cache cable; do
-    ./bin/rails db:create:$db 2>/dev/null || true
-  done
-
-  # Load schemas only if tables don't exist (check with DISABLE_DATABASE_ENVIRONMENT_CHECK)
-  DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails runner "
-    %w[queue cache cable].each do |db|
-      config = ActiveRecord::Base.configurations.configs_for(env_name: Rails.env, name: db)
-      next unless config
-      ActiveRecord::Base.establish_connection(config)
-      schema_file = Rails.root.join('db', \"#{db}_schema.rb\")
-      if schema_file.exist? && ActiveRecord::Base.connection.tables.empty?
-        puts \"Loading schema for #{db} database...\"
-        load(schema_file)
-      end
-    end
-  "
-}
-
 # If running the rails server (directly or via Thruster) then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  prepare_databases
+  ./bin/rails db:prepare
 elif [ "${1}" == "./bin/thrust" ] && [ "${2}" == "./bin/rails" ] && [ "${3}" == "server" ]; then
-  prepare_databases
+  ./bin/rails db:prepare
 fi
 
 exec "${@}"
