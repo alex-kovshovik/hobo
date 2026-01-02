@@ -22,6 +22,6 @@ class Expense < ApplicationRecord
   end
 
   def broadcast_budget_update
-    budget.reload.broadcast_update(date)
+    budget.broadcast_update(date)
   end
 end

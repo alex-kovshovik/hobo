@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Ignore requests from stale service workers from other apps that previously ran on this port
-  get "pwa-service-worker.js", to: proc { [404, {}, [""]] }
+  # Kill stale service workers from other apps that previously ran on this port
+  get "pwa-service-worker.js", to: proc { [200, { "Content-Type" => "application/javascript" }, ["self.registration.unregister()"]] }
   get "apple-icon.png", to: proc { [404, {}, [""]] }
 
   resources :budgets, only: %i[index] do
