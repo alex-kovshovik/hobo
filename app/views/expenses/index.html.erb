@@ -26,7 +26,7 @@
             total += expense.amount
             date = expense.date
           %>
-          <tr class="border-b border-gray-300 dark:border-gray-500 <%= date.sunday? || date.saturday? ? 'bg-gray-200 dark:bg-gray-700' : '' %>">
+          <tr class="border-b border-gray-300 <%= date.sunday? || date.saturday? ? 'bg-gray-200' : '' %>">
             <td><%= date.day %></td>
             <td><%= expense.creator.first_name %></td>
             <td class="has-text-right">
