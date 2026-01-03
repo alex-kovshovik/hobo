@@ -2,7 +2,7 @@
 service: hobo-app
 
 # Name of the container image.
-image: hobo-shovik-com-registry/hobo-app
+image: hobo-app
 
 # Deploy to these servers.
 servers:
@@ -21,13 +21,9 @@ proxy:
   ssl: true
   host: hobo.shovik.com
 
-# Credentials for your image host.
+# Use a temporary local registry for deployment (no paid remote registry needed).
 registry:
-  server: registry.digitalocean.com
-  username:
-    - KAMAL_REGISTRY_PASSWORD
-  password:
-    - KAMAL_REGISTRY_PASSWORD
+  local: true
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
@@ -74,8 +70,6 @@ asset_path: /rails/public/assets
 # Configure the image builder.
 builder:
   arch: amd64
-  cache:
-    type: registry
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
