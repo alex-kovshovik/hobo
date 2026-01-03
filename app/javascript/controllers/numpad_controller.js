@@ -5,12 +5,38 @@ export default class extends Controller {
   static targets = [ "amount", "modal" ]
   static values = { digits: { type: Array, default: [] }, date: String }
 
+  connect() {
+    this.handlePopState = this.handlePopState.bind(this)
+    window.addEventListener("popstate", this.handlePopState)
+  }
+
+  disconnect() {
+    window.removeEventListener("popstate", this.handlePopState)
+  }
+
+  handlePopState(event) {
+    if (this.isModalOpen()) {
+      this.closeModalWithoutHistory()
+    }
+  }
+
+  isModalOpen() {
+    return this.modalTarget.classList.contains("is-active")
+  }
+
   openModal() {
+    history.pushState({ modal: "expense" }, "")
     this.modalTarget.classList.add("is-active")
     document.documentElement.classList.add("is-clipped")
   }
 
   closeModal() {
+    if (this.isModalOpen()) {
+      history.back()
+    }
+  }
+
+  closeModalWithoutHistory() {
     this.modalTarget.classList.remove("is-active")
     document.documentElement.classList.remove("is-clipped")
     this.digitsValue = []
@@ -25,7 +51,6 @@ export default class extends Controller {
       const expense = new Expense(budgetId, digits, this.dateValue)
       expense.save()
         .then(data => {
-          this.digitsValue = []
           this.closeModal()
         })
         .catch(error => alert("Error: " + error))
