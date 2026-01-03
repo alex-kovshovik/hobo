@@ -1,16 +1,19 @@
 <% date = local_assigns.fetch(:date, @date) %>
 <%= cache [budget.cache_key_with_date(date)] do %>
-  <%= link_to budget_expenses_path(budget, date: date), id: dom_id(budget, date), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.75rem;", data: { turbo: false } do %>
+  <%= link_to budget_expenses_path(budget, date: date), id: dom_id(budget, date), class: "button is-light is-fullwidth", style: "height: auto; padding: 0.5rem 0.75rem;", data: { turbo: false } do %>
     <div class="is-flex is-flex-direction-column is-align-items-stretch" style="width: 100%;">
       <!-- Icon, Name, and Amount Row -->
-      <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+      <div class="is-flex is-justify-content-space-between is-align-items-center mb-1">
         <div class="is-flex is-align-items-center">
           <span class="icon mr-2">
             <i class="<%= budget.icon %>"></i>
           </span>
           <span class="has-text-weight-medium"><%= budget.name %></span>
         </div>
-        <span class="has-text-weight-medium"><%= number_to_currency(budget.total_spent, precision: 0) %></span>
+        <div class="is-flex is-flex-direction-column is-align-items-flex-end" style="line-height: 1.2;">
+          <span class="has-text-weight-medium"><%= number_to_currency(budget.total_spent, precision: 0) %></span>
+          <span style="font-size: 0.65rem;">of <%= number_to_currency(budget.amount, precision: 0) %></span>
+        </div>
       </div>
 
       <!-- Progress Bar -->
