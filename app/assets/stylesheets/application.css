@@ -33,3 +33,16 @@ body {
   max-width: 400px;
   padding: 2rem;
 }
+
+/* Mobile budget list optimizations */
+@media screen and (max-width: 768px) {
+  /* Reduce section padding on mobile */
+  section.section {
+    padding: 1.5rem 1rem;
+  }
+
+  /* Reduce gap between budget cards */
+  .buttons {
+    gap: 0.75rem;
+  }
+}
