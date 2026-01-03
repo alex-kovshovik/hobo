@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get "pwa-service-worker.js", to: proc { [200, { "Content-Type" => "application/javascript" }, ["self.registration.unregister()"]] }
   get "apple-icon.png", to: proc { [404, {}, [""]] }
 
-  resources :budgets, only: %i[index] do
+  resources :budgets, only: %i[index edit update] do
     collection do
       get ":date", to: "budgets#index", as: :date, constraints: { date: /\d{4}-\d{2}-\d{2}/ }, format: false
     end

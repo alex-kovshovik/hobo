@@ -4,7 +4,12 @@
 
     <nav class="level is-mobile">
       <div class="level-left">
-        <h2 class="subtitle is-3"><%= @budget.name %></h2>
+        <h2 class="subtitle is-3">
+          <%= @budget.name %>
+          <%= link_to edit_budget_path(@budget), class: "ml-2" do %>
+            <span class="icon is-small has-text-grey"><i class="fas fa-pencil-alt"></i></span>
+          <% end %>
+        </h2>
       </div>
       <div class="level-right">
         <h2 class="subtitle is-3"><%= number_to_currency(@budget.amount, precision: 0) %></h2>
