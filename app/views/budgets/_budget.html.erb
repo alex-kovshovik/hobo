@@ -12,19 +12,15 @@
         </div>
         <div class="is-flex is-flex-direction-column is-align-items-flex-end" style="line-height: 1.2;">
           <span class="has-text-weight-medium"><%= number_to_currency(budget.total_spent, precision: 0) %></span>
-          <span style="font-size: 0.65rem;">of <%= number_to_currency(budget.amount, precision: 0) %></span>
+          <span style="font-size: 0.65rem; color: #9ca3af;">of <%= number_to_currency(budget.amount, precision: 0) %></span>
         </div>
       </div>
 
       <!-- Progress Bar -->
       <div class="is-relative" style="height: 0.75rem;">
-        <%
-          progress_class = budget.percent_spent > budget.percent_of_month ? "is-danger" : "is-primary"
-        %>
-
-        <progress class="progress is-small mb-0 <%= progress_class %>" value="<%= budget.total_spent %>" max="<%= budget.amount %>"><%= budget.percent_spent %>%</progress>
+        <progress class="progress is-small mb-0" value="<%= budget.total_spent %>" max="<%= budget.amount %>" style="--bulma-progress-value-background-color: <%= budget.progress_bar_color %>;"><%= budget.percent_spent %>%</progress>
         <% if budget.percent_of_month < 100 %>
-          <div class="has-background-dark" style="position: absolute; top: 0; bottom: 0; width: 2px; left: <%= budget.percent_of_month %>%; transform: translateX(-50%);"></div>
+          <div style="position: absolute; top: 0; bottom: 0; width: 2px; left: <%= budget.percent_of_month %>%; transform: translateX(-50%); background-color: <%= budget.progress_marker_color %>;"></div>
         <% end %>
       </div>
     </div>
