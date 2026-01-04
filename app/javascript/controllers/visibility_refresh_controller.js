@@ -2,7 +2,10 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["frame"]
-  static values = { threshold: { type: Number, default: 30 } }
+  static values = {
+    threshold: { type: Number, default: 30 },
+    url: String
+  }
 
   connect() {
     this.hiddenAt = null
@@ -22,8 +25,8 @@ export default class extends Controller {
   }
 
   refresh() {
-    if (this.hasFrameTarget) {
-      this.frameTarget.reload()
+    if (this.hasFrameTarget && this.hasUrlValue) {
+      this.frameTarget.src = this.urlValue
     }
   }
 }
