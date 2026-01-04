@@ -1,7 +1,7 @@
 <div data-controller="visibility-refresh"
      data-visibility-refresh-threshold-value="30"
      data-action="visibilitychange@document->visibility-refresh#track">
-  <%= turbo_frame_tag "budgets", src: date_budgets_path(date: @date), data: { visibility_refresh_target: "frame" } do %>
+  <%= turbo_frame_tag "budgets", src: (date_budgets_path(date: @date) unless turbo_frame_request?), data: { visibility_refresh_target: "frame" } do %>
     <div class="buttons">
       <% @budgets.each do |budget| %>
         <%= render "budget", budget: budget, date: budget.date %>
