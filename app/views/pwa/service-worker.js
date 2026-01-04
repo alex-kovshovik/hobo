@@ -1,5 +1,5 @@
 // Service Worker for HOBO PWA
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const STATIC_CACHE = `hobo-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `hobo-dynamic-${CACHE_VERSION}`;
 
@@ -85,9 +85,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Stale-while-revalidate for HTML pages
+  // Network-first for HTML pages (prioritize fresh data)
   if (request.headers.get('Accept')?.includes('text/html')) {
-    event.respondWith(staleWhileRevalidate(request));
+    event.respondWith(networkFirst(request));
     return;
   }
 
