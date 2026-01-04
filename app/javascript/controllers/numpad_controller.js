@@ -7,15 +7,18 @@ export default class extends Controller {
 
   connect() {
     this.handlePopState = this.handlePopState.bind(this)
-    window.addEventListener("popstate", this.handlePopState)
+    // Use capture phase to handle before Turbo's popstate listener
+    window.addEventListener("popstate", this.handlePopState, true)
   }
 
   disconnect() {
-    window.removeEventListener("popstate", this.handlePopState)
+    window.removeEventListener("popstate", this.handlePopState, true)
   }
 
   handlePopState(event) {
     if (this.isModalOpen()) {
+      // Prevent Turbo from doing a restoration visit when we're just closing the modal
+      event.stopImmediatePropagation()
       this.closeModalWithoutHistory()
     }
   }
