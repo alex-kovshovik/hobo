@@ -6,6 +6,10 @@ class BudgetsController < ApplicationController
   def index
     @date = params[:date] ? Date.parse(params[:date]) : Date.current.beginning_of_month
     @budgets = Current.user.family.budgets.map { BudgetPresenter.new(it, @date) }
+
+    if turbo_frame_request?
+      render partial: "budgets", formats: [:html]
+    end
   end
 
   def edit
