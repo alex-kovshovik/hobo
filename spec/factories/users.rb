@@ -8,5 +8,6 @@ FactoryBot.define do
     last_name { "Doe" }
     sequence(:email_address) { |n| "john.doe#{n}@hobo.com" }
     password { "hobopass" }
+    association :family
   end
 end
