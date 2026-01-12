@@ -1,6 +1,7 @@
 <%= turbo_stream_from Current.user.family, date: @date %>
 
-<section class="section is-full-height is-flex is-flex-direction-column" data-controller="numpad" data-numpad-date-value="<%= @date %>">
+<% expense_date = @date == Date.current.beginning_of_month ? Date.current : @date %>
+<section class="section is-full-height is-flex is-flex-direction-column" data-controller="numpad" data-numpad-date-value="<%= expense_date %>">
   <div class="container is-flex-grow-1">
     <%= render "month_selector", prev_link: date_budgets_path(date: @date.prev_month), next_link: date_budgets_path(date: @date.next_month) %>
     <%= render "budgets" %>
