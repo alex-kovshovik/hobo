@@ -11,6 +11,7 @@ class Budget < ApplicationRecord
   def broadcast_update(date)
     return if Rails.env.test?
 
-    broadcast_render_to family, date: date.beginning_of_month, partial: "budgets/update", locals: { budget: self, date: date }
+    month_date = date.beginning_of_month
+    broadcast_render_to family, date: month_date, partial: "budgets/update", locals: { budget: self, date: month_date }
   end
 end
