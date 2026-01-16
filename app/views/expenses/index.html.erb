@@ -31,7 +31,7 @@
             total += expense.amount
             date = expense.date
           %>
-          <tr class="border-b border-gray-300 <%= date.sunday? || date.saturday? ? 'bg-gray-200' : '' %>">
+          <tr class="<%= 'has-background-success-light' if expense.amount < 0 %>">
             <td><%= date.day %></td>
             <td><%= expense.creator.first_name %></td>
             <td class="has-text-right <%= 'has-text-success' if expense.amount < 0 %>">
@@ -43,9 +43,9 @@
         <% end %>
 
         <tr>
-          <td></td>
-          <td></td>
-          <td><%= number_to_currency(total, precision: 0) %></td>
+          <td colspan="3" class="has-text-centered has-text-weight-medium">
+            Budget total: <%= number_to_currency(total, precision: 0) %>
+          </td>
         </tr>
       </tbody>
     </table>
