@@ -17,7 +17,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
       click_button "Expense"
 
       expect(page).to have_css(".modal.is-active")
-      expect(page).to have_content("Select Budget:")
+      expect(page).to have_content("Select a budget to add expense:")
     end
 
     it "closes when clicking the modal background", :skip_ci do

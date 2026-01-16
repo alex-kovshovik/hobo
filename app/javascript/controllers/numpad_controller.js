@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import Expense from "models/expense"
 
 export default class extends Controller {
-  static targets = [ "amount", "modal", "modalTitle", "budgetButtons" ]
+  static targets = [ "amount", "modal", "selectLabel", "budgetButtons" ]
   static values = { digits: { type: Array, default: [] }, date: String, isRefund: { type: Boolean, default: false } }
 
   connect() {
@@ -48,17 +48,13 @@ export default class extends Controller {
     const buttons = this.budgetButtonsTarget.querySelectorAll("button")
 
     if (this.isRefundValue) {
-      this.modalTitleTarget.textContent = "Add Refund"
-      this.modalTitleTarget.classList.remove("has-text-primary")
-      this.modalTitleTarget.classList.add("has-text-warning")
+      this.selectLabelTarget.textContent = "Select a budget to add refund:"
       buttons.forEach(btn => {
         btn.classList.remove("is-light", "is-primary")
         btn.classList.add("is-warning")
       })
     } else {
-      this.modalTitleTarget.textContent = "Add Expense"
-      this.modalTitleTarget.classList.remove("has-text-warning")
-      this.modalTitleTarget.classList.add("has-text-primary")
+      this.selectLabelTarget.textContent = "Select a budget to add expense:"
       buttons.forEach(btn => {
         btn.classList.remove("is-light", "is-warning")
         btn.classList.add("is-primary")

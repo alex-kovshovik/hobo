@@ -2,11 +2,10 @@
   <div class="modal-background" data-action="click->numpad#closeModal"></div>
   <div class="modal-content" style="max-width: 400px;">
     <div class="box">
-      <h2 class="title is-4 has-text-centered mb-4" data-numpad-target="modalTitle">Add Expense</h2>
       <%= render "amount_input" %>
       <%= render "numpad" %>
       <div class="mt-4">
-        <p class="has-text-weight-medium mb-3">Select Budget:</p>
+        <p class="has-text-weight-medium mb-3" data-numpad-target="selectLabel">Select a budget to add expense:</p>
         <%= render "modal_budgets" %>
       </div>
     </div>
