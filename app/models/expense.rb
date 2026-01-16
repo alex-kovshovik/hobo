@@ -8,7 +8,7 @@ class Expense < ApplicationRecord
 
   after_commit :broadcast_budget_update
 
-  validates :amount, presence: true, numericality: { greater_than: 0 }
+  validates :amount, presence: true, numericality: { other_than: 0 }
   validates :date, presence: true
 
   scope :ordered, -> { order(created_at: :desc) }

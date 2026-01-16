@@ -34,7 +34,7 @@
           <tr class="border-b border-gray-300 <%= date.sunday? || date.saturday? ? 'bg-gray-200' : '' %>">
             <td><%= date.day %></td>
             <td><%= expense.creator.first_name %></td>
-            <td class="has-text-right">
+            <td class="has-text-right <%= 'has-text-success' if expense.amount < 0 %>">
               <%= link_to number_to_currency(expense.amount, precision: 0), budget_expense_path(@budget, expense),
                           data: { turbo_method: :delete,
                                   turbo_confirm: "Delete this expense?" } %>

@@ -11,17 +11,17 @@ RSpec.describe "Expense Creation", type: :system, js: true do
   end
 
   describe "expense modal" do
-    it "opens when clicking Add Expense button" do
-      expect(page).to have_button("Add Expense")
+    it "opens when clicking Expense button" do
+      expect(page).to have_button("Expense")
 
-      click_button "Add Expense"
+      click_button "Expense"
 
       expect(page).to have_css(".modal.is-active")
       expect(page).to have_content("Select Budget:")
     end
 
     it "closes when clicking the modal background", :skip_ci do
-      click_button "Add Expense"
+      click_button "Expense"
       expect(page).to have_css(".modal.is-active")
 
       # Click on the edge of the modal background to avoid the modal content
@@ -31,7 +31,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
     end
 
     it "closes when clicking the X button" do
-      click_button "Add Expense"
+      click_button "Expense"
       expect(page).to have_css(".modal.is-active")
 
       find(".modal-close").click
@@ -40,7 +40,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
     end
 
     it "closes when pressing browser back button" do
-      click_button "Add Expense"
+      click_button "Expense"
       expect(page).to have_css(".modal.is-active")
 
       page.go_back
@@ -52,7 +52,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
 
   describe "numpad entry" do
     before do
-      click_button "Add Expense"
+      click_button "Expense"
     end
 
     it "displays entered digits" do
@@ -117,7 +117,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
     # between transactional/non-transactional test modes.
 
     it "creates expense when selecting a budget with amount entered", :skip_ci do
-      click_button "Add Expense"
+      click_button "Expense"
 
       click_button "2"
       click_button "5"
@@ -132,7 +132,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
     end
 
     it "updates budget card after expense creation", :skip_ci do
-      click_button "Add Expense"
+      click_button "Expense"
 
       click_button "5"
       click_button "0"
@@ -145,7 +145,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
     end
 
     it "does not create expense when no amount is entered" do
-      click_button "Add Expense"
+      click_button "Expense"
 
       find("button[data-action='numpad#budgetPress']", text: "Groceries").click
 
@@ -155,7 +155,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
     end
 
     it "records the current user as the expense creator", :skip_ci do
-      click_button "Add Expense"
+      click_button "Expense"
       click_button "1"
       click_button "0"
       find("button[data-action='numpad#budgetPress']", text: "Groceries").click
@@ -170,7 +170,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
 
     it "shows all family budgets in the modal" do
       visit budgets_path
-      click_button "Add Expense"
+      click_button "Expense"
 
       expect(page).to have_css("button[data-action='numpad#budgetPress']", text: "Groceries")
       expect(page).to have_css("button[data-action='numpad#budgetPress']", text: "Utilities")
@@ -178,7 +178,7 @@ RSpec.describe "Expense Creation", type: :system, js: true do
 
     it "creates expense for the selected budget" do
       visit budgets_path
-      click_button "Add Expense"
+      click_button "Expense"
       click_button "7"
       click_button "5"
       find("button[data-action='numpad#budgetPress']", text: "Utilities").click

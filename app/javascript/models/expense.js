@@ -1,8 +1,9 @@
 export default class Expense {
-  constructor(budgetId, digits, date) {
+  constructor(budgetId, digits, date, isRefund = false) {
     this.budgetId = budgetId
     this.digits = digits
     this.date = date
+    this.isRefund = isRefund
   }
 
   save() {
@@ -10,6 +11,7 @@ export default class Expense {
     const formData = new FormData();
     formData.append(`expense[digits]`, this.digits);
     formData.append(`expense[date]`, this.date);
+    formData.append(`expense[is_refund]`, this.isRefund);
 
     return fetch(`/budgets/${this.budgetId}/expenses`, {
       method: 'POST',

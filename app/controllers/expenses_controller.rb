@@ -28,7 +28,8 @@ class ExpensesController < ApplicationController
   end
 
   def expense_amount
-    expense_params[:digits].to_i
+    amount = expense_params[:digits].to_i
+    expense_params[:is_refund] == "true" ? -amount : amount
   end
 
   def expense_date
@@ -36,6 +37,6 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:budget_id, :digits, :date)
+    params.require(:expense).permit(:budget_id, :digits, :date, :is_refund)
   end
 end

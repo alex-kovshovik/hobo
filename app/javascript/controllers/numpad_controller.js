@@ -2,17 +2,26 @@ import { Controller } from "@hotwired/stimulus"
 import Expense from "models/expense"
 
 export default class extends Controller {
-  static targets = [ "amount", "modal" ]
-  static values = { digits: { type: Array, default: [] }, date: String }
+  static targets = [ "amount", "modal", "modalTitle", "budgetButtons" ]
+  static values = { digits: { type: Array, default: [] }, date: String, isRefund: { type: Boolean, default: false } }
 
   connect() {
     this.handlePopState = this.handlePopState.bind(this)
+    this.handleKeydown = this.handleKeydown.bind(this)
     // Use capture phase to handle before Turbo's popstate listener
     window.addEventListener("popstate", this.handlePopState, true)
+    window.addEventListener("keydown", this.handleKeydown)
   }
 
   disconnect() {
     window.removeEventListener("popstate", this.handlePopState, true)
+    window.removeEventListener("keydown", this.handleKeydown)
+  }
+
+  handleKeydown(event) {
+    if (event.key === "Escape" && this.isModalOpen()) {
+      this.closeModal()
+    }
   }
 
   handlePopState(event) {
@@ -27,10 +36,34 @@ export default class extends Controller {
     return this.modalTarget.classList.contains("is-active")
   }
 
-  openModal() {
+  openModal(e) {
+    this.isRefundValue = e.currentTarget.dataset.refund === "true"
+    this.updateModalStyle()
     history.pushState({ modal: "expense" }, "")
     this.modalTarget.classList.add("is-active")
     document.documentElement.classList.add("is-clipped")
+  }
+
+  updateModalStyle() {
+    const buttons = this.budgetButtonsTarget.querySelectorAll("button")
+
+    if (this.isRefundValue) {
+      this.modalTitleTarget.textContent = "Add Refund"
+      this.modalTitleTarget.classList.remove("has-text-primary")
+      this.modalTitleTarget.classList.add("has-text-warning")
+      buttons.forEach(btn => {
+        btn.classList.remove("is-light", "is-primary")
+        btn.classList.add("is-warning")
+      })
+    } else {
+      this.modalTitleTarget.textContent = "Add Expense"
+      this.modalTitleTarget.classList.remove("has-text-warning")
+      this.modalTitleTarget.classList.add("has-text-primary")
+      buttons.forEach(btn => {
+        btn.classList.remove("is-light", "is-warning")
+        btn.classList.add("is-primary")
+      })
+    }
   }
 
   closeModal() {
@@ -51,7 +84,7 @@ export default class extends Controller {
 
     if (digits.length > 0) {
       e.preventDefault()
-      const expense = new Expense(budgetId, digits, this.dateValue)
+      const expense = new Expense(budgetId, digits, this.dateValue, this.isRefundValue)
       expense.save()
         .then(data => {
           this.closeModal()
