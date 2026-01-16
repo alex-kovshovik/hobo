@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "monthly_total_#{date.strftime('%Y_%m')}" do %>
+  <div class="has-text-centered py-3" style="font-size: 0.9rem; color: #6b7280;">
+    Monthly Total: <span class="has-text-weight-semibold has-text-dark"><%= number_to_currency(monthly_total, precision: 0) %></span>
+  </div>
+<% end %>

@@ -6,6 +6,7 @@ class BudgetsController < ApplicationController
   def index
     @date = params[:date] ? Date.parse(params[:date]) : Date.current.beginning_of_month
     @budgets = Current.user.family.budgets.map { BudgetPresenter.new(it, @date) }
+    @monthly_total = @budgets.sum(&:total_spent)
 
     if turbo_frame_request?
       render partial: "budgets", formats: [:html]

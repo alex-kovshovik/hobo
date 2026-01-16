@@ -1,0 +1,8 @@
+<%
+  monthly_total = local_assigns.fetch(:monthly_total)
+  date = local_assigns.fetch(:date)
+%>
+
+<%= turbo_stream.replace "monthly_total_#{date.strftime('%Y_%m')}" do %>
+  <%= render "budgets/monthly_total", monthly_total: monthly_total, date: date %>
+<% end %>

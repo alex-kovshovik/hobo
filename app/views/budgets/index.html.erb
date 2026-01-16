@@ -5,6 +5,7 @@
   <div class="container is-flex-grow-1">
     <%= render "month_selector", prev_link: date_budgets_path(date: @date.prev_month), next_link: date_budgets_path(date: @date.next_month) %>
     <%= render "budgets" %>
+    <%= render "monthly_total", monthly_total: @monthly_total, date: @date %>
   </div>
 
   <div class="container">
