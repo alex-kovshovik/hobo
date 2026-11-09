@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "shovik-claude-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "alex-kovshovik/shovik-claude-plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "shovik-common@shovik-claude-plugins": true,
+    "shovik-rails@shovik-claude-plugins": true
+  }
+}
