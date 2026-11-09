@@ -58,3 +58,15 @@ bin/kamal dbc          # Database console
 - Deploys to single server via Kamal with local Docker registry
 - SQLite database persisted in Docker volume
 - SSL via Let's Encrypt (hobo.shovik.com)
+
+## Shovik ship and review plugins
+
+This repo enrolls the private `shovik-claude-plugins` marketplace in `.claude/settings.json`.
+
+- `/shovik-common:ship`: local checks plus an independent reviewer loop on the current branch (max 3 rounds).
+- `/shovik-common:review`: one independent review round, no fixes.
+- `/shovik-rails:rails-review`: Rails reviewer only.
+- Preview only by default: no push, PR, comment, merge or deploy. `--live` is opt-in, creates a draft PR at most, and asks first.
+- No self-certification: findings come from a separate reviewer subagent; the author never marks its own work as reviewed, and a human approves every merge.
+- Hobo: enrolled for future use only. The ship loop never deploys; do not run `bin/kamal deploy` or `--live` from it without Alex's explicit OK.
+- Activation: a new Claude Code session in this project discovers the marketplace; cloning it needs GitHub access to the private repo.
