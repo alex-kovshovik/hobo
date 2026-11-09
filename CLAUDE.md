@@ -43,6 +43,12 @@ bin/kamal dbc          # Database console
 - **Budget** → belongs to Family, has many Expenses (monthly spending categories with icons)
 - **Expense** → belongs to Budget, tracks individual spending with creator auditing
 
+### Authorization Boundary
+- The family is the authorization boundary: a signed-in user may only read or change budgets and expenses of `Current.user.family`.
+- Controllers load budgets through `Current.user.family.budgets.find(...)`, never `Budget.find`, so another family's ids return 404.
+- Expenses are reached only through that scoped budget (`@budget.expenses`), never `Expense.find`.
+- Request specs for each budget/expense action cover the cross-family case (`spec/requests/budgets_spec.rb`, `spec/requests/expenses_spec.rb`).
+
 ### Key Patterns
 - **Real-time updates**: Budgets broadcast via Action Cable when expenses change
 - **Monthly scoping**: Expenses are filtered by month using `for_month` scope
