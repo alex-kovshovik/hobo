@@ -3,6 +3,8 @@
 require "rails_helper"
 
 RSpec.describe "Month Navigation", type: :system, js: true do
+  around { |example| travel_to(Time.zone.local(2026, 11, 15, 12)) { example.run } }
+
   let(:user) { create(:user) }
   let!(:budget) { create(:budget, family: user.family, name: "Groceries", amount: 500) }
 

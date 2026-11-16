@@ -41,6 +41,7 @@ RSpec.configure do |config|
   config.filter_run_excluding :skip_ci
 
   config.include FactoryBot::Syntax::Methods
+  config.include ActiveSupport::Testing::TimeHelpers
 
   config.before(:suite) do
     FactoryBot.find_definitions

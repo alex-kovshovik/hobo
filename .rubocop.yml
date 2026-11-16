@@ -1,3 +1,11 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - ./lib/rubocop/shovik.rb
+
+plugins:
+  - rubocop-rails
+
 AllCops:
   Exclude:
     - 'db/**/*'
@@ -21,3 +29,81 @@ Style/StringLiterals:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+
+Rails:
+  Enabled: false
+
+Rails/Date:
+  Enabled: true
+
+Rails/TimeZone:
+  Enabled: true
+
+Shovik/TestsPinClock:
+  Enabled: true
+  Include:
+    - 'test/**/*_test.rb'
+    - 'spec/**/*_spec.rb'
+  PinningHelpers: []
+
+Shovik/RescueRequiresLibrary:
+  Enabled: true
+  Libraries:
+    'Net::': ['net/protocol', 'net/http', 'net/https', 'net/smtp', 'net/imap', 'net/pop', 'net/ftp']
+    'Net::HTTP': ['net/http', 'net/https']
+    'Net::SMTP': ['net/smtp']
+    'Net::IMAP': ['net/imap']
+    'Net::POP': ['net/pop']
+    'Net::FTP': ['net/ftp']
+    'OpenSSL::': ['openssl', 'net/https']
+    'JSON::': ['json']
+    'Zlib::': ['zlib']
+    'CSV::': ['csv']
+    'IPAddr::': ['ipaddr']
+    'Resolv::': ['resolv']
+
+Shovik/RescueNonException:
+  Enabled: true
+  NonExceptionConstants:
+    - Object
+    - BasicObject
+    - Kernel
+    - Comparable
+    - Enumerable
+    - String
+    - Symbol
+    - Integer
+    - Float
+    - Numeric
+    - Array
+    - Hash
+    - Set
+    - Range
+    - Proc
+    - Struct
+    - Time
+    - Date
+    - DateTime
+    - IO
+    - Errno
+    - Net
+    - Net::HTTP
+    - Net::SMTP
+    - Net::IMAP
+    - Net::POP3
+    - Net::FTP
+    - JSON
+    - YAML
+    - Psych
+    - OpenSSL
+    - OpenSSL::SSL
+    - Timeout
+    - URI
+    - CSV
+    - Zlib
+    - Socket
+    - ActiveRecord
+    - ActiveSupport
+    - ActiveModel
+    - ActionController
+    - Rails

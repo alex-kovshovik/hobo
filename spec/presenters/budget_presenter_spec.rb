@@ -11,6 +11,8 @@ describe BudgetPresenter do
   let(:budget) { create(:budget, family: family, amount: 100) }
   let(:date) { Date.current.beginning_of_month }
 
+  around { |example| travel_to(Time.zone.local(2026, 11, 15, 12)) { example.run } }
+
   describe "#total_spent" do
     context "when there are expenses" do
       before do
@@ -50,7 +52,7 @@ describe BudgetPresenter do
   describe "#percent_of_month" do
     context "when the month is the current month" do
       it "calculates the percent of the month passed" do
-        expect(subject.percent_of_month).to be_within(0.1).of((Date.current.day / Date.current.end_of_month.day.to_f) * 100)
+        expect(subject.percent_of_month).to eq(50.0)
       end
     end
 
