@@ -16,6 +16,7 @@ describe Shovik::RescueClassCheck do
     stub_const("ShovikProbe::Retryable", Module.new)
     stub_const("ShovikProbe::RetryableError", Class.new(StandardError).tap { |klass| klass.include(ShovikProbe::Retryable) })
     stub_const("ShovikProbe::Namespace", Module.new)
+    stub_const("ShovikProbe::Matcher", Module.new.tap { |mod| mod.define_singleton_method(:===) { |error| error.is_a?(IOError) } })
     stub_const("ShovikProbe::ERRORS", [ShovikProbe::Error, IOError])
     stub_const("ShovikProbe::MIXED", [ShovikProbe::Error, ShovikProbe::Response])
   end
@@ -30,10 +31,22 @@ describe Shovik::RescueClassCheck do
     expect(violations(<<~RUBY)).to be_empty
       begin
         work
-      rescue StandardError, ShovikProbe::Error, ::IOError, ShovikProbe::Retryable, *ShovikProbe::ERRORS
+      rescue StandardError, ShovikProbe::Error, ::IOError, ShovikProbe::Retryable, ShovikProbe::Matcher, *ShovikProbe::ERRORS
         nil
       end
       x = work rescue nil
+    RUBY
+  end
+
+  it "does not crash on dynamic class paths" do
+    expect(violations(<<~RUBY)).to eq(["probe.rb:4: rescue ShovikProbe::Namespace is ShovikProbe::Namespace, not an exception class"])
+      class self::Inner
+        def call
+          work
+        rescue ShovikProbe::Namespace
+          nil
+        end
+      end
     RUBY
   end
 

@@ -32,11 +32,17 @@ module Shovik
       private
 
       def within(node)
-        name = node.constant_path.full_name
-        @nesting.push(name.start_with?("::") || @nesting.empty? ? name.delete_prefix("::") : "#{@nesting.last}::#{name}")
+        @nesting.push(scope_name(node))
         yield
       ensure
         @nesting.pop
+      end
+
+      def scope_name(node)
+        name = node.constant_path.full_name
+        name.start_with?("::") || @nesting.empty? ? name.delete_prefix("::") : "#{@nesting.last}::#{name}"
+      rescue Prism::ConstantPathNode::DynamicPartsInConstantPathError
+        "#{@nesting.last}::(dynamic)"
       end
     end
 
@@ -114,7 +120,7 @@ module Shovik
       return value <= Exception if value.is_a?(Class)
       return false unless value.is_a?(Module)
 
-      Exception.descendants.any? { |klass| klass.include?(value) }
+      value.method(:===).owner != Module || Exception.descendants.any? { |klass| klass.include?(value) }
     end
   end
 end
