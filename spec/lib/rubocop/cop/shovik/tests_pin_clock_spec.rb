@@ -31,6 +31,8 @@ RSpec.describe RuboCop::Cop::Shovik::TestsPinClock, :config do
         ^^^^^^^^^^^^^^^ Pin the clock [...]
         DateTime.now
         ^^^^^^^^^^^^ Pin the clock [...]
+        Time.new
+        ^^^^^^^^ Pin the clock [...]
         3.days.ago
         ^^^^^^^^^^ Pin the clock [...]
         1.week.from_now
@@ -54,6 +56,7 @@ RSpec.describe RuboCop::Cop::Shovik::TestsPinClock, :config do
         Date.new(2026, 11, 15) + 10.days
         3.days.since(Time.zone.local(2026, 1, 1))
         Time.zone.parse("2026-11-15")
+        Time.new(2026, 11, 15)
       end
     RUBY
   end
@@ -138,6 +141,36 @@ RSpec.describe RuboCop::Cop::Shovik::TestsPinClock, :config do
     expect_offense(<<~RUBY)
       describe Budget do
         it { travel_to Time.zone.local(2026, 11, 15) }
+
+        it { Date.current }
+             ^^^^^^^^^^^^ Pin the clock [...]
+      end
+    RUBY
+  end
+
+  it "does not let a group pin cover code that runs before it" do
+    expect_offense(<<~RUBY)
+      describe Budget do
+        before { freeze_time }
+        before(:all) { @date = Date.current }
+                               ^^^^^^^^^^^^ Pin the clock [...]
+
+        CUTOFF = Date.current
+                 ^^^^^^^^^^^^ Pin the clock [...]
+
+        context Time.now.to_s do
+                ^^^^^^^^ Pin the clock [...]
+          before(:each) { Time.current }
+          it { Date.current }
+        end
+      end
+    RUBY
+  end
+
+  it "ignores a pin in a before(:all) hook" do
+    expect_offense(<<~RUBY)
+      describe Budget do
+        before(:all) { travel_to Time.zone.local(2026, 11, 15) }
 
         it { Date.current }
              ^^^^^^^^^^^^ Pin the clock [...]

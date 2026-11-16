@@ -7,7 +7,9 @@ module RuboCop
       #
       # A clock read is pinned when it sits inside a pinning call (`travel_to`, `freeze_time`, `travel`,
       # `Timecop.freeze`/`travel`), inside a test or example whose body pins the clock, or inside a group
-      # or class whose `setup`/`before`/`around` hook pins it. Including a module or shared context named in
+      # or class whose per-example `setup`/`before`/`around` hook pins it. Group-level pins cover only code that
+      # runs per example (examples, `let`/`subject`, per-example hooks, methods), not load-time group bodies or
+      # `before(:all)`. Including a module or shared context named in
       # `PinningHelpers` also counts as pinning for that group.
       #
       # @example
@@ -26,7 +28,7 @@ module RuboCop
 
         CLOCK_CLASS_METHODS = {
           Date: %i[current today yesterday tomorrow],
-          Time: %i[current now],
+          Time: %i[current now new],
           DateTime: %i[current now]
         }.freeze
         ZONE_METHODS = %i[now today yesterday tomorrow].to_set.freeze
@@ -36,6 +38,9 @@ module RuboCop
         TIMECOP_METHODS = %i[freeze travel].to_set.freeze
         HOOK_METHODS = %i[setup before around prepend_before append_before].to_set.freeze
         EXAMPLE_METHODS = %i[it specify example scenario its test focus fit fspecify fexample].to_set.freeze
+        ALL_HOOK_METHODS = (HOOK_METHODS | %i[teardown after prepend_after append_after]).freeze
+        LAZY_METHODS = %i[let let! subject subject!].to_set.freeze
+        PER_EXAMPLE_SCOPES = %i[each example].to_set.freeze
         INCLUDE_METHODS = %i[include include_context].to_set.freeze
 
         def on_send(node)
@@ -49,61 +54,69 @@ module RuboCop
         private
 
         def clock_read?(node)
+          return false if node.arguments?
+
           class_clock_read?(node) || zone_clock_read?(node) || relative_clock_read?(node)
         end
 
         def class_clock_read?(node)
-          receiver = node.receiver
-          return false unless receiver&.const_type?
-
-          CLOCK_CLASS_METHODS.fetch(receiver.const_name.delete_prefix("::").to_sym, []).include?(node.method_name)
+          CLOCK_CLASS_METHODS.any? { |klass, methods| const?(node.receiver, klass) && methods.include?(node.method_name) }
         end
 
         def zone_clock_read?(node)
           receiver = node.receiver
-          return false unless ZONE_METHODS.include?(node.method_name)
-          return false unless receiver&.send_type? && receiver.method?(:zone) && receiver.receiver&.const_type?
-
-          receiver.receiver.const_name.delete_prefix("::") == "Time"
+          ZONE_METHODS.include?(node.method_name) && receiver&.send_type? && receiver.method?(:zone) &&
+            const?(receiver.receiver, :Time)
         end
 
         def relative_clock_read?(node)
-          RELATIVE_METHODS.include?(node.method_name) && !node.arguments? && node.receiver&.send_type? &&
-            duration_unit?(node.receiver)
+          RELATIVE_METHODS.include?(node.method_name) && node.receiver&.send_type? &&
+            DURATION_UNITS.include?(node.receiver.method_name)
         end
 
-        def duration_unit?(node)
-          DURATION_UNITS.include?(node.method_name)
+        def const?(node, name)
+          node&.const_type? && node.const_name.delete_prefix("::") == name.to_s
         end
 
         def pinned?(node)
+          per_example = false
           node.each_ancestor(:block, :numblock, :send, :def, :class).any? do |ancestor|
-            pin_call?(ancestor) || pinning_block?(ancestor) || pinning_scope?(ancestor)
+            next true if pin_call?(ancestor) || pinning_example?(ancestor)
+
+            per_example ||= ancestor.def_type? || per_example_block?(ancestor)
+            per_example && pinning_scope?(ancestor)
           end
         end
 
-        def pin_call?(node)
-          return pin_method?(node) if node.send_type?
+        def bare_block?(node, methods)
+          (node.block_type? || node.numblock_type?) && node.send_node.receiver.nil? && methods.include?(node.method_name)
+        end
 
-          (node.block_type? || node.numblock_type?) && pin_method?(node.send_node)
+        def per_example_block?(node)
+          bare_block?(node, EXAMPLE_METHODS) || bare_block?(node, LAZY_METHODS) || per_example_hook?(node, ALL_HOOK_METHODS)
+        end
+
+        def per_example_hook?(node, methods)
+          return false unless bare_block?(node, methods)
+
+          scope = node.send_node.first_argument
+          scope.nil? || !scope.sym_type? || PER_EXAMPLE_SCOPES.include?(scope.value)
+        end
+
+        def pin_call?(node)
+          node = node.send_node if node.block_type? || node.numblock_type?
+          node.send_type? && pin_method?(node)
         end
 
         def pin_method?(node)
           return PIN_METHODS.include?(node.method_name) if node.receiver.nil?
 
-          node.receiver.const_type? && node.receiver.const_name == "Timecop" && TIMECOP_METHODS.include?(node.method_name)
+          const?(node.receiver, :Timecop) && TIMECOP_METHODS.include?(node.method_name)
         end
 
-        def pinning_block?(node)
-          return false unless node.block_type? || node.numblock_type? || node.def_type?
-
-          example_or_test?(node) && contains_pin?(node.body)
-        end
-
-        def example_or_test?(node)
-          return node.method_name.to_s.start_with?("test_") if node.def_type?
-
-          node.send_node.receiver.nil? && EXAMPLE_METHODS.include?(node.method_name)
+        def pinning_example?(node)
+          example = node.def_type? ? node.method_name.start_with?("test_") : bare_block?(node, EXAMPLE_METHODS)
+          example && contains_pin?(node.body)
         end
 
         def pinning_scope?(node)
@@ -120,33 +133,21 @@ module RuboCop
         end
 
         def pinning_hook?(node)
-          if node.def_type?
-            node.method?(:setup) && contains_pin?(node.body)
-          elsif node.block_type? || node.numblock_type?
-            node.send_node.receiver.nil? && HOOK_METHODS.include?(node.method_name) && contains_pin?(node.body)
-          else
-            false
-          end
+          hook = node.def_type? ? node.method?(:setup) : per_example_hook?(node, HOOK_METHODS)
+          hook && contains_pin?(node.body)
         end
 
         def pinning_include?(node)
           return false unless node.send_type? && node.receiver.nil? && INCLUDE_METHODS.include?(node.method_name)
 
-          node.arguments.any? { |argument| pinning_helpers.include?(helper_name(argument)) }
-        end
-
-        def helper_name(argument)
-          if argument.const_type?
-            argument.const_name
-          elsif argument.str_type?
-            argument.value
+          node.arguments.any? do |argument|
+            name = argument.const_type? ? argument.const_name : argument.str_content
+            pinning_helpers.include?(name)
           end
         end
 
         def contains_pin?(node)
-          return false unless node
-
-          node.each_node(:send).any? { |send| pin_method?(send) }
+          node&.each_node(:send)&.any? { |send| pin_method?(send) }
         end
 
         def pinning_helpers

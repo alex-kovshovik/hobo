@@ -20,7 +20,7 @@ bin/rspec spec/models  # Run specific directory
 bin/rspec spec/models/budget_spec.rb:15  # Run specific test line
 
 # Code Quality
-bin/ci                 # Full local CI: db:prepare, rubocop, cop specs, brakeman, rspec (steps in config/ci.rb)
+bin/ci                 # Full local CI: db:prepare, rubocop, cop specs, shovik:rescue_classes, brakeman, rspec (steps in config/ci.rb)
 bin/rubocop            # Lint code, including the custom Shovik cops
 bin/brakeman           # Security scan
 
@@ -54,7 +54,8 @@ bin/kamal dbc          # Database console
 `lib/rubocop/cop/shovik/` holds project cops loaded from `.rubocop.yml` and tested in `spec/lib/rubocop/`:
 - `Shovik/TestsPinClock`: specs/tests that read the clock (`Date.current`, `Time.now`, `3.days.ago`, ...) must pin it with `travel_to`/`freeze_time` in the example or an enclosing `before`/`around`/`setup`.
 - `Shovik/RescueRequiresLibrary`: rescuing a stdlib error (`Net::*`, `OpenSSL::*`, `JSON::*`, ...) requires the library in the same file.
-- `Shovik/RescueNonException`: flags rescuing a namespace or value class (`Timeout`, `Net::SMTP`, `String`) instead of an error class.
+
+`bin/rails shovik:rescue_classes` (run by `bin/ci`) loads the app and fails if any constant in a `rescue` clause under `app/` or `lib/` is undefined or not an exception class. Logic lives in `lib/shovik/rescue_class_check.rb`.
 
 `Rails/Date` and `Rails/TimeZone` are the only enabled `rubocop-rails` cops. Pre-existing offenses are baselined in `.rubocop_todo.yml`.
 
