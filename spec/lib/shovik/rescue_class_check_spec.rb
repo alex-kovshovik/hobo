@@ -16,6 +16,7 @@ describe Shovik::RescueClassCheck do
     stub_const("ShovikProbe::Retryable", Module.new)
     stub_const("ShovikProbe::RetryableError", Class.new(StandardError).tap { |klass| klass.include(ShovikProbe::Retryable) })
     stub_const("ShovikProbe::Namespace", Module.new)
+    stub_const("ShovikProbe::Dsl", Module.new.tap { |mod| mod.define_singleton_method(:method) { |*| :http_verb } })
     stub_const("ShovikProbe::Matcher", Module.new.tap { |mod| mod.define_singleton_method(:===) { |error| error.is_a?(IOError) } })
     stub_const("ShovikProbe::ERRORS", [ShovikProbe::Error, IOError])
     stub_const("ShovikProbe::MIXED", [ShovikProbe::Error, ShovikProbe::Response])
@@ -68,7 +69,7 @@ describe Shovik::RescueClassCheck do
     source = <<~RUBY
       begin
         work
-      rescue ShovikProbe::Namespace, ShovikProbe::Missing, *ShovikProbe::MIXED
+      rescue ShovikProbe::Namespace, ShovikProbe::Missing, ShovikProbe::Dsl, *ShovikProbe::MIXED
         nil
       end
     RUBY
@@ -76,6 +77,7 @@ describe Shovik::RescueClassCheck do
     expect(violations(source)).to contain_exactly(
       "probe.rb:3: rescue ShovikProbe::Namespace is ShovikProbe::Namespace, not an exception class",
       "probe.rb:3: rescue ShovikProbe::Missing is not defined",
+      "probe.rb:3: rescue ShovikProbe::Dsl is ShovikProbe::Dsl, not an exception class",
       "probe.rb:3: rescue *ShovikProbe::MIXED contains non-exceptions: ShovikProbe::Response"
     )
   end

@@ -4,7 +4,8 @@ require "prism"
 
 module Shovik
   # Resolves every constant named in a `rescue` clause against the loaded app and reports the ones that
-  # are undefined or are not exception classes (a class below Exception, or a module an exception includes).
+  # are undefined or are not exception classes. Accepted: a class below Exception, a module an exception
+  # includes, or a module with its own `===` matcher.
   class RescueClassCheck
     UNDEFINED = Object.new.freeze
 
@@ -120,7 +121,7 @@ module Shovik
       return value <= Exception if value.is_a?(Class)
       return false unless value.is_a?(Module)
 
-      value.method(:===).owner != Module || Exception.descendants.any? { |klass| klass.include?(value) }
+      value.singleton_class.instance_method(:===).owner != Module || Exception.descendants.any? { |klass| klass.include?(value) }
     end
   end
 end
