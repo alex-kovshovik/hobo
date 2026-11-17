@@ -24,7 +24,7 @@ class ExpensesController < ApplicationController
   private
 
   def find_budget
-    @budget = Budget.find(params[:budget_id])
+    @budget = Current.user.family.budgets.find(params[:budget_id])
   end
 
   def expense_amount
